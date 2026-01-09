@@ -614,7 +614,7 @@ class ACFFA_Admin
 	public function acffa_plugin_version_cb( $args )
 	{
 		?>
-		<input type="hidden" value="<?php echo ACFFA_VERSION; ?>" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]" />
+		<input type="hidden" value="<?php echo esc_html(ACFFA_VERSION); ?>" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]" />
 		<?php
 	}
 
@@ -622,11 +622,11 @@ class ACFFA_Admin
 	{
 		?>
 		<p id="<?php echo esc_attr( $args['id'] ); ?>">
-			<?php _e( 'Use the icon set builder to create custom collections of FontAwesome icons to be used in your ACF FontAwesome fields', 'acf-font-awesome' ); ?><br>
-			<em><?php _e( 'If you\'ve made changes the the FontAwesome version you are loading above, please refresh this page to see those changes reflected in the list below.', 'acf-font-awesome' ); ?></em>
+			<?php esc_html_e( 'Use the icon set builder to create custom collections of FontAwesome icons to be used in your ACF FontAwesome fields', 'acf-font-awesome' ); ?><br>
+			<em><?php esc_html_e( 'If you\'ve made changes the the FontAwesome version you are loading above, please refresh this page to see those changes reflected in the list below.', 'acf-font-awesome' ); ?></em>
 		</p>
 		<p class="icon-builder-complete-changes-notice">
-	 		<strong><?php _e( 'You must save your changes to the major version before using the icon set builder.', 'acf-font-awesome' ); ?></strong>
+	 		<strong><?php esc_html_e( 'You must save your changes to the major version before using the icon set builder.', 'acf-font-awesome' ); ?></strong>
 		</p>
 		<?php
 	}
@@ -634,9 +634,9 @@ class ACFFA_Admin
 	public function acffa_new_icon_set_label_cb( $args )
 	{
 		?>
-		<input type="text" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]" placeholder="<?php _e( 'Custom Icon Set Name', 'acf-font-awesome' ); ?>">
+		<input type="text" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]" placeholder="<?php esc_html_e( 'Custom Icon Set Name', 'acf-font-awesome' ); ?>">
 		<p>
-			<em><?php _e( 'NOTE: Providing a label that is already in use will overwrite the existing custom icon set.', 'acf-font-awesome' ); ?></em>
+			<em><?php esc_html_e( 'NOTE: Providing a label that is already in use will overwrite the existing custom icon set.', 'acf-font-awesome' ); ?></em>
 		</p>
 		<?php
 	}
@@ -659,12 +659,12 @@ class ACFFA_Admin
 						if ( version_compare( ACFFA_MAJOR_VERSION, 5, '=' ) ) {
 							foreach ( $fa_icons['list'] as $prefix => $icons ) {
 								$optgroup_label = apply_filters( 'ACFFA_icon_prefix_label', 'Regular', $prefix );
-								echo '<optgroup label="' . $optgroup_label . '">';
+								echo '<optgroup label="' . esc_attr( $optgroup_label ) . '">';
 
 								foreach( $icons as $k => $v ) {
 									$value = str_replace( array( 'fas ', 'far ', 'fab ', 'fal ', 'fad ', 'fa-' ), '', $k );
 									?>
-									<option value="<?php echo $k; ?>"><?php echo $value; ?></option>
+									<option value="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $value ); ?></option>
 									<?php
 								}
 
@@ -674,13 +674,13 @@ class ACFFA_Admin
 							foreach ( $fa_icons['list'] as $k => $v ) {
 								$value = str_replace( array( 'fa-' ), '', $k );
 								?>
-								<option value="<?php echo $k; ?>"><?php echo $value; ?></option>
+								<option value="<?php echo esc_attr( $k ); ?>"><?php echo esc_html( $value ); ?></option>
 								<?php
 							}
 						}
 					} else {
 						?>
-						<option value=""><?php _e( 'No Icons Found', 'acf-font-awesome' ); ?></option>
+						<option value=""><?php esc_html_e( 'No Icons Found', 'acf-font-awesome' ); ?></option>
 						<?php
 					}
 				?>
@@ -706,20 +706,20 @@ class ACFFA_Admin
 				}
 				?>
 				<li class="icon-set" data-set-label="<?php echo esc_html( $icon_set_label ); ?>" data-set-name="<?php echo esc_html( $icon_set_name ); ?>">
-					<span><strong><?php echo esc_html( $icon_set_label ); ?></strong> <span class="actions">( <a href="#" class="edit-icon-set"><?php _e( 'Load For Editing', 'acf-font-awesome' ); ?></a> | <a href="#" class="view-icon-list"><?php _e( 'Toggle Icon List', 'acf-font-awesome' ); ?></a> | <a href="#" class="delete-icon-set" data-icon-set-name="<?php echo esc_html( $icon_set_name ); ?>" data-nonce="<?php echo wp_create_nonce( 'acffa_delete_set_' . $icon_set_name ); ?>"><?php _e( 'Delete Icon Set', 'acf-font-awesome' ); ?></a> )</span></span>
+					<span><strong><?php echo esc_html( $icon_set_label ); ?></strong> <span class="actions">( <a href="#" class="edit-icon-set"><?php esc_html_e( 'Load For Editing', 'acf-font-awesome' ); ?></a> | <a href="#" class="view-icon-list"><?php esc_html_e( 'Toggle Icon List', 'acf-font-awesome' ); ?></a> | <a href="#" class="delete-icon-set" data-icon-set-name="<?php echo esc_attr( $icon_set_name ); ?>" data-nonce="<?php echo esc_attr( wp_create_nonce( 'acffa_delete_set_' . $icon_set_name ) ); ?>"><?php esc_html_e( 'Delete Icon Set', 'acf-font-awesome' ); ?></a> )</span></span>
 					<ul class="icon-list">
 						<?php
 							if ( version_compare( ACFFA_MAJOR_VERSION, 6, '>=' ) ) {
 								foreach ( $icon_set as $family_style => $icons ) {
 									?>
 									<li>
-										<span class="style"><?php echo apply_filters( 'ACFFA_icon_prefix_label', 'Regular', $family_style ); ?></span>
+										<span class="style"><?php echo esc_html( apply_filters( 'ACFFA_icon_prefix_label', 'Regular', $family_style ) ); ?></span>
 										<ul>
 											<?php
 												foreach ( $icons as $id => $icon_json ) {
 													$icon_info	= json_decode( $icon_json );
 													$family		= isset( $icon_info->family ) ? $icon_info->family : apply_filters( 'ACFFA_default_family_by_style', 'classic', $icon_info->style );
-													echo '<li class="icon" data-icon-json="' . htmlentities( $icon_json ) . '"><i class="fa-' . $family . ' fa-' . $icon_info->style . ' fa-' . $icon_info->id . ' fa-fw"></i>' . $icon_info->label . '</li>';
+													echo '<li class="icon" data-icon-json="' . esc_attr( htmlentities( $icon_json ) ) . '"><i class="fa-' . esc_attr( $family ) . ' fa-' . esc_attr( $icon_info->style ) . ' fa-' . esc_attr( $icon_info->id ) . ' fa-fw"></i>' . esc_html( $icon_info->label ) . '</li>';
 												}
 											?>
 										</ul>
@@ -730,11 +730,11 @@ class ACFFA_Admin
 								foreach ( $icon_set as $prefix => $icons ) {
 									?>
 									<li>
-										<?php echo apply_filters( 'ACFFA_icon_prefix_label', 'Regular', $prefix ); ?>
+										<?php echo esc_html( apply_filters( 'ACFFA_icon_prefix_label', 'Regular', $prefix ) ); ?>
 										<ul>
 											<?php
 												foreach ( $icons as $class => $label ) {
-													echo '<li class="icon" data-icon="' . $class . '">' . $label . '</li>';
+													echo '<li class="icon" data-icon="' . esc_attr( $class ) . '">' . esc_html( $label ) . '</li>';
 												}
 											?>
 										</ul>
@@ -746,7 +746,7 @@ class ACFFA_Admin
 									?>
 									<li>
 										<?php
-											echo '<li class="icon" data-icon="' . $class . '">' . $label . '</li>';
+											echo '<li class="icon" data-icon="' . esc_attr( $class ) . '">' . esc_html( $label ) . '</li>';
 										?>
 									</li>
 									<?php
@@ -761,7 +761,7 @@ class ACFFA_Admin
 			</ul>
 			<?php
 		} else {
-			_e( 'No existing custom icon set(s) found.', 'acf-font-awesome' );
+			esc_html_e( 'No existing custom icon set(s) found.', 'acf-font-awesome' );
 		}
 	}
 

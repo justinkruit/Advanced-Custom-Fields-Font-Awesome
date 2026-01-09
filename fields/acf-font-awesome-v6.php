@@ -246,17 +246,17 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 			if ( $v5_icon_preselected ) :
 				$previous_icon_info = $this->get_previous_icon_info( $select_value );
 				?>
-				<div class="v5-compat-message" aria-label="<?php _e( 'This FontAwesome v5 Pro icon cannot be automatically translated to its v6 equivalent and will need to be reselected before saving this post/page.', 'acf-font-awesome' ); ?>" data-microtip-size="large" data-microtip-position="top" role="tooltip">
-					<?php echo sprintf (__( 'Please reselect your FontAwesome Icon.', 'acf-font-awesome' ), 'SOLID', 'COFFEE' ); ?> <i class="fas fa-question-circle"></i>
+				<div class="v5-compat-message" aria-label="<?php esc_html_e( 'This FontAwesome v5 Pro icon cannot be automatically translated to its v6 equivalent and will need to be reselected before saving this post/page.', 'acf-font-awesome' ); ?>" data-microtip-size="large" data-microtip-position="top" role="tooltip">
+					<?php echo sprintf (esc_html__( 'Please reselect your FontAwesome Icon.', 'acf-font-awesome' ), 'SOLID', 'COFFEE' ); ?> <i class="fas fa-question-circle"></i>
 					<?php
 						if ( isset( $previous_icon_info['style'] ) && ! empty( $previous_icon_info['style'] ) ) :
 							?>
-							<em><?php _e( 'Style:', 'acf-font-awesome' ); ?></em> <strong><?php echo $previous_icon_info['style']; ?></strong>
+							<em><?php esc_html_e( 'Style:', 'acf-font-awesome' ); ?></em> <strong><?php echo esc_html( $previous_icon_info['style'] ); ?></strong>
 							<?php
 						endif;
 						if ( isset( $previous_icon_info['name'] ) && ! empty( $previous_icon_info['name'] ) ) :
 							?>
-							<em><?php _e( 'Name:', 'acf-font-awesome' ); ?></em> <strong><?php echo $previous_icon_info['name']; ?></strong>
+							<em><?php esc_html_e( 'Name:', 'acf-font-awesome' ); ?></em> <strong><?php echo esc_html( $previous_icon_info['name'] ); ?></strong>
 							<?php
 						endif;
 					?>
