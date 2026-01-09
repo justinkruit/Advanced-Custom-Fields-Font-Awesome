@@ -47,7 +47,7 @@ class ACFFA_Admin
 		}
 		?>
 		<div class="notice notice-info is-dismissible">
-			<p><?php echo sprintf( __( 'Visit the new ACF <a href="%s">FontAwesome Settings</a> page to change FontAwesome icon version, or to create custom icon sets.', 'acf-font-awesome' ), admin_url( '/edit.php?post_type=acf-field-group&page=fontawesome-settings' ) ); ?></p>
+			<p><?php echo wp_kses(sprintf( __( 'Visit the new ACF <a href="%s">FontAwesome Settings</a> page to change FontAwesome icon version, or to create custom icon sets.', 'acf-font-awesome' ), admin_url( '/edit.php?post_type=acf-field-group&page=fontawesome-settings' ) ), array( 'a' => array( 'href' => array() ) ) ); ?></p>
 		</div>
 		<?php
 		unset( $acffa_settings['show_upgrade_notice'] );
@@ -64,7 +64,7 @@ class ACFFA_Admin
 		$curl_info = curl_version();
 		?>
 		<div class="notice notice-error is-dismissible">
-			<p><?php _e( 'The plugin "Advanced Custom Fields: Font Awesome" has detected an error while retrieving the latest FontAwesome icons. This may be due to temporary CDN downtime. However if problems persist, please contact your hosting provider to ensure cURL is installed and up to date. Detected cURL version: ', 'acf-font-awesome' ) . $curl_info['version']; ?></p>
+			<p><?php esc_html_e( 'The plugin "Advanced Custom Fields: Font Awesome" has detected an error while retrieving the latest FontAwesome icons. This may be due to temporary CDN downtime. However if problems persist, please contact your hosting provider to ensure cURL is installed and up to date. Detected cURL version: ', 'acf-font-awesome' ) . $curl_info['version']; ?></p>
 		</div>
 		<?php
 	}
@@ -262,11 +262,11 @@ class ACFFA_Admin
 					?>
 					<div class="get-fontawesome-pro">
 						<div class="title-button-wrap">
-							<i class="<?php echo $fortawesome; ?>"></i>
-							<h3><?php _e( 'Get more icons, styles, tools, & tech support. Upgrade to Font Awesome Pro!', 'acf-font-awesome' ); ?></h3>
-							<a target="_blank" href="https://fontawesome.com/referral?a=f4be3e1256"><i class="<?php echo $carrot_icon; ?>"></i><?php _e( 'Get More with Pro', 'acf-font-awesome' ); ?></a>
+							<i class="<?php echo esc_html($fortawesome); ?>"></i>
+							<h3><?php esc_html_e( 'Get more icons, styles, tools, & tech support. Upgrade to Font Awesome Pro!', 'acf-font-awesome' ); ?></h3>
+							<a target="_blank" href="https://fontawesome.com/referral?a=f4be3e1256"><i class="<?php echo esc_attr($carrot_icon); ?>"></i><?php esc_html_e( 'Get More with Pro', 'acf-font-awesome' ); ?></a>
 						</div>
-						<p><?php _e( 'A subscription to a Font Awesome Pro Plan gives you access to 7,000+ icons, all 5 icon styles, handy services and tools, software and icon updates, a lifetime license to use Pro icons, and actual human support. Signing up with the button above helps to support development on this plugin.', 'acf-font-awesome' ); ?></p>
+						<p><?php esc_html_e( 'A subscription to a Font Awesome Pro Plan gives you access to 7,000+ icons, all 5 icon styles, handy services and tools, software and icon updates, a lifetime license to use Pro icons, and actual human support. Signing up with the button above helps to support development on this plugin.', 'acf-font-awesome' ); ?></p>
 					</div>
 					<?php
 				endif;
@@ -467,28 +467,28 @@ class ACFFA_Admin
 		$attributes = defined( 'ACFFA_OVERRIDE_MAJOR_VERSION' ) ? 'disabled' : false;
 		?>
 		<p>
-			<?php _e( 'IMPORTANT: This plugin has undergone major changes between FontAwesome versions. Switching to a new version may require you to reselect some/all icons that you have previously selected using this plugin. Switching to v6 has introduced a new "Compatibility Mode" that aims to make this migration easier.', 'acf-font-awesome' ); ?>
+			<?php esc_html_e( 'IMPORTANT: This plugin has undergone major changes between FontAwesome versions. Switching to a new version may require you to reselect some/all icons that you have previously selected using this plugin. Switching to v6 has introduced a new "Compatibility Mode" that aims to make this migration easier.', 'acf-font-awesome' ); ?>
 		</p>
 		<br>
-		<select <?php echo $attributes; ?> id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]">
+		<select <?php echo esc_attr( $attributes ); ?> id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]">
 			<option value="4" <?php echo isset( $options[ $args[ 'label_for'] ] ) ? ( selected( $options[ $args[ 'label_for'] ], 4, false ) ) : ( '' ); ?>>
-			<?php _e( '4.x', 'acf-font-awesome' ); ?>
+			<?php esc_html_e( '4.x', 'acf-font-awesome' ); ?>
 			</option>
 			<option value="5" <?php echo isset( $options[ $args[ 'label_for'] ] ) ? ( selected( $options[ $args[ 'label_for'] ], 5, false ) ) : ( '' ); ?>>
-			<?php _e( '5.x', 'acf-font-awesome' ); ?>
+			<?php esc_html_e( '5.x', 'acf-font-awesome' ); ?>
 			</option>
 			<option value="6" <?php echo isset( $options[ $args[ 'label_for'] ] ) ? ( selected( $options[ $args[ 'label_for'] ], 6, false ) ) : ( '' ); ?>>
-			<?php _e( '6.x', 'acf-font-awesome' ); ?>
+			<?php esc_html_e( '6.x', 'acf-font-awesome' ); ?>
 			</option>
       <option value="7" <?php echo isset( $options[ $args[ 'label_for'] ] ) ? ( selected( $options[ $args[ 'label_for'] ], 7, false ) ) : ( '' ); ?>>
-      <?php _e( '7.x', 'acf-font-awesome' ); ?>
+      <?php esc_html_e( '7.x', 'acf-font-awesome' ); ?>
       </option>
 		</select>
 		<?php
 		if ( defined( 'ACFFA_OVERRIDE_MAJOR_VERSION' ) ) :
 			?>
 			<p>
-				<em><?php _e( 'The FontAwesome version is manually set with the "ACFFA_override_major_version" filter, and cannot be modified from this screen. Please remove or update the filter to make changes.', 'acf-font-awesome' ); ?></em>
+				<em><?php esc_html_e( 'The FontAwesome version is manually set with the "ACFFA_override_major_version" filter, and cannot be modified from this screen. Please remove or update the filter to make changes.', 'acf-font-awesome' ); ?></em>
 			</p>
 			<?php
 		endif;
@@ -499,13 +499,13 @@ class ACFFA_Admin
 		$options = get_option( 'acffa_settings' );
 		?>
 		<p>
-			<?php _e( 'Attempt to automatically migrate any older FontAwesome icon selections made using this plugin to their FontAwesome v6 equivalents.', 'acf-font-awesome' ); ?><br>
-			<em><?php _e( 'NOTE: This is only able to automatically migrate FontAwesome free icons. Pro icons will need to be manually reselected.', 'acf-font-awesome' ); ?></em>
+			<?php esc_html_e( 'Attempt to automatically migrate any older FontAwesome icon selections made using this plugin to their FontAwesome v6 equivalents.', 'acf-font-awesome' ); ?><br>
+			<em><?php esc_html_e( 'NOTE: This is only able to automatically migrate FontAwesome free icons. Pro icons will need to be manually reselected.', 'acf-font-awesome' ); ?></em>
 		</p>
 		<br>
 		<p>
 			<input type="checkbox" value="1" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]" <?php echo isset( $options[ $args[ 'label_for'] ] ) ? ( checked( $options[ $args[ 'label_for'] ] ) ) : ( '' ); ?> />
-			<label for="<?php echo esc_attr( $args['label_for'] ); ?>"><?php _e( 'Enable Compatibility Mode <em>(Recommended only for users with existing FontAwesome 4.x/5.x icon selections)</em>', 'acf-font-awesome' ); ?></label>
+			<label for="<?php echo esc_attr( $args['label_for'] ); ?>"><?php esc_html_e( 'Enable Compatibility Mode ', 'acf-font-awesome' ); ?><em><?php esc_html_e( '(Recommended only for users with existing FontAwesome 4.x/5.x icon selections)', 'acf-font-awesome' ); ?></em></label>
 		</p>
 		<?php
 	}
@@ -515,13 +515,13 @@ class ACFFA_Admin
 		$options = get_option( 'acffa_settings' );
 		?>
 		<p>
-			<?php _e( 'If you have a FontAwesome Pro license, check the box below to enable the pro icons.', 'acf-font-awesome' ); ?><br>
-			<em><?php _e( 'NOTE: You MUST add this domain in your FontAwesome "Pro CDN Domains" in order for this to work!', 'acf-font-awesome' ); ?></em>
+			<?php esc_html_e( 'If you have a FontAwesome Pro license, check the box below to enable the pro icons.', 'acf-font-awesome' ); ?><br>
+			<em><?php esc_html_e( 'NOTE: You MUST add this domain in your FontAwesome "Pro CDN Domains" in order for this to work!', 'acf-font-awesome' ); ?></em>
 		</p>
 		<br>
 		<p>
 			<input type="checkbox" value="1" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]" <?php echo isset( $options[ $args[ 'label_for'] ] ) ? ( checked( $options[ $args[ 'label_for'] ] ) ) : ( '' ); ?> />
-			<label for="<?php echo esc_attr( $args['label_for'] ); ?>"><?php _e( 'I have enabled this domain for CDN use. Turn on the pro icons!', 'acf-font-awesome' ); ?></label>
+			<label for="<?php echo esc_attr( $args['label_for'] ); ?>"><?php esc_html_e( 'I have enabled this domain for CDN use. Turn on the pro icons!', 'acf-font-awesome' ); ?></label>
 		</p>
 		<?php
 	}
@@ -531,25 +531,29 @@ class ACFFA_Admin
 		if ( $api_key = apply_filters( 'ACFFA_fa_api_key', false ) ) {
 			?>
 				<p>
-					<?php _e( 'The API key has been set programatically using the "ACFFA_fa_api_key" filter.', 'acf-font-awesome' ); ?><br>
+					<?php esc_html_e( 'The API key has been set programatically using the "ACFFA_fa_api_key" filter.', 'acf-font-awesome' ); ?><br>
 				</p>
 			<?php
 		} else {
 			$options = get_option( 'acffa_settings' );
 			?>
 			<p>
-				<?php _e( 'You can create an API token from your <a target="_blank" href="https://fontawesome.com/account/#api-tokens">FontAwesome Account</a> page', 'acf-font-awesome' ); ?><br>
+				<?php printf(
+					/* translators: %s is a link to FontAwesome Account page */
+					esc_html__( 'You can create an API token from your %s page', 'acf-font-awesome' ),
+					'<a target="_blank" href="' . esc_url( 'https://fontawesome.com/account/#api-tokens' ) . '">' . esc_html__( 'FontAwesome Account', 'acf-font-awesome' ) . '</a>'
+				); ?><br>
 			</p>
 			<br>
 			<p>
 				<input type="text" class="regular-text code" value="<?php echo isset( $options[ $args[ 'label_for'] ] ) ? ( esc_attr( $options[ $args[ 'label_for'] ] ) ) : ''; ?>" id="<?php echo esc_attr( $args['label_for'] ); ?>" name="acffa_settings[<?php echo esc_attr( $args['label_for'] ); ?>]" />
 				<br>
-				<span class="validation-label"><?php _e( 'Token Validation:', 'acf-font-awesome' ); ?></span>
+				<span class="validation-label"><?php esc_html_e( 'Token Validation:', 'acf-font-awesome' ); ?></span>
 				<span class="validation-result">
-					<span class="empty"><?php _e( 'Please add your API token above.', 'acf-font-awesome' ); ?></span>
-					<span class="save"><?php _e( 'Save settings to validate token.', 'acf-font-awesome' ); ?></span>
-					<span class="success"><?php _e( 'Token successfully validated.', 'acf-font-awesome' ); ?></span>
-					<span class="error"><?php _e( 'Could not validate token. Please verify the token has been correctly entered.', 'acf-font-awesome' ); ?></span>
+					<span class="empty"><?php esc_html_e( 'Please add your API token above.', 'acf-font-awesome' ); ?></span>
+					<span class="save"><?php esc_html_e( 'Save settings to validate token.', 'acf-font-awesome' ); ?></span>
+					<span class="success"><?php esc_html_e( 'Token successfully validated.', 'acf-font-awesome' ); ?></span>
+					<span class="error"><?php esc_html_e( 'Could not validate token. Please verify the token has been correctly entered.', 'acf-font-awesome' ); ?></span>
 				</span>
 			</p>
 			<?php
@@ -561,28 +565,28 @@ class ACFFA_Admin
 		if ( $api_key = apply_filters( 'ACFFA_fa_kit_token', false ) ) {
 			?>
 				<p>
-					<?php _e( 'The kit token has been set programatically using the "ACFFA_fa_kit_token" filter.', 'acf-font-awesome' ); ?><br>
+					<?php esc_html_e( 'The kit token has been set programatically using the "ACFFA_fa_kit_token" filter.', 'acf-font-awesome' ); ?><br>
 				</p>
 			<?php
 		} else {
 			$options = get_option( 'acffa_settings' );
 			?>
 			<p>
-				<?php _e( 'FontAwesome kits are required for using FontAwesome Pro icons. Enter your API token above to select your kit.', 'acf-font-awesome' ); ?><br>
+				<?php esc_html_e( 'FontAwesome kits are required for using FontAwesome Pro icons. Enter your API token above to select your kit.', 'acf-font-awesome' ); ?><br>
 			</p>
 			<br>
 
 			<table class="widefat" id="available_kits">
 				<thead>
 					<tr>
-						<td><?php _e( 'Select', 'acf-font-awesome' ); ?></td>
-						<td><?php _e( 'Kit Name', 'acf-font-awesome' ); ?></td>
-						<td><?php _e( 'Token', 'acf-font-awesome' ); ?></td>
-						<td><?php _e( 'Status', 'acf-font-awesome' ); ?></td>
-						<td><?php _e( 'License', 'acf-font-awesome' ); ?></td>
-						<td><?php _e( 'Technology', 'acf-font-awesome' ); ?></td>
-						<td><?php _e( 'Custom Icon(s)', 'acf-font-awesome' ); ?></td>
-						<td><?php _e( 'Version', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'Select', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'Kit Name', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'Token', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'Status', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'License', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'Technology', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'Custom Icon(s)', 'acf-font-awesome' ); ?></td>
+						<td><?php esc_html_e( 'Version', 'acf-font-awesome' ); ?></td>
 					</tr>
 				</thead>
 				<tbody>

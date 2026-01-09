@@ -244,7 +244,7 @@ if ( ! class_exists('acf_plugin_font_awesome') ) :
 			if ( $out_of_date_message ) {
 				?>
 				<div class="update-message notice notice-warning notice-alt is-dismissible">
-					<?php echo $out_of_date_message; ?>
+					<?php echo wp_kses_post( $out_of_date_message ); ?>
 				</div>
 				<?php
 			}
