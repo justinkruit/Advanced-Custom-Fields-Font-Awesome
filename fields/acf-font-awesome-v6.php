@@ -329,12 +329,12 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 
 			if ( is_object( $icon_json ) ) {
 				$family = isset( $icon_json->family ) ? $icon_json->family : apply_filters( 'ACFFA_default_family_by_style', 'classic', $icon_json->style );
-				$class	= 'fa-' . $family . ' fa-' . $icon_json->style . ' fa-' . $icon_json->id;
-				$prefix	= 'fa-' . $family . ' fa-' . $icon_json->style;
+				$class = 'fa-' . esc_attr($family) . ' fa-' . esc_attr($icon_json->style) . ' fa-' . esc_attr($icon_json->id);
+				$prefix	= 'fa-' . esc_attr($family) . ' fa-' . esc_attr($icon_json->style);
 
 				switch ( $field['save_format'] ) {
 					case 'element':
-						$value = '<i class="' . $class . '" aria-hidden="true"></i>';
+						$value = '<i class="' . esc_attr($class) . '" aria-hidden="true"></i>';
 						break;
 
 					case 'unicode':
