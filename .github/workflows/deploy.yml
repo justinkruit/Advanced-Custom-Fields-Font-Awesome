@@ -28,4 +28,4 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       with:
-        files: ${{ github.workspace }}/${{ github.event.repository.name }}.zip
+        files: ${{ github.workspace }}/advanced-custom-fields-font-awesome.zip
