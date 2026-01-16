@@ -4,7 +4,7 @@ Contributors: justinkruit, mattkeys
 Tags: Advanced Custom Fields, ACF, Font Awesome, FontAwesome
 Requires at least: 3.5
 Tested up to: 6.9
-Stable tag: 5.0.1
+Stable tag: 5.0.2
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,12 @@ This notification message is filterable so you can customize it to better repres
 2. Searchable list of all icons, including large live preview
 
 == Changelog ==
+
+= 5.0.2 =
+**Note: The next bigger update will have changes to the way icons are being selected when using FontAwesome 7.x to utilize new and future features from FontAwesome. Unfortunately this means we will be deprecating the “Icon Set Builder” feature to better align this plugin with the FontAwesome ecosystem. This change will only effect users using FontAwesome 7.x icons. The Icon Set Builder will continue to work as it has with previous versions of FontAwesome. We welcome your feedback on this change.**
+
+* Bugfix: Added custom kit icons to Font Awesome 7.x icon set loading.
+* Security: Sanitizing and escaping more outputs.
 
 = 5.0.1 =
 **Note: The next update will have changes to the way icons are being selected when using FontAwesome 7.x to utilize new and future features from FontAwesome. Unfortunately this means we will be deprecating the “Icon Set Builder” feature to better align this plugin with the FontAwesome ecosystem. This change will only effect users using FontAwesome 7.x icons. The Icon Set Builder will continue to work as it has with previous versions of FontAwesome. We welcome your feedback on this change.**
