@@ -6,10 +6,11 @@
 		} else {
 			try {
 				var iconJson = $.parseJSON( value );
+				console.log(iconJson);
 
 				if ( 'object' === typeof iconJson ) {
-					$( '.acf-field-setting-fa_live_preview .acf-input', parent ).html( '<i class="fa-' + iconJson.family + ' fa-' + iconJson.style + ' fa-' + iconJson.id + ' fa-fw" aria-hidden="true"></i>' );
-					$( '.icon_preview', parent ).html( '<i class="fa-' + iconJson.family + ' fa-' + iconJson.style + ' fa-' + iconJson.id + ' fa-fw" aria-hidden="true"></i>' );
+					$( '.acf-field-setting-fa_live_preview .acf-input', parent ).html( acf.escHtml('<i class="fa-' + iconJson.family + ' fa-' + iconJson.style + ' fa-' + iconJson.id + ' fa-fw" aria-hidden="true"></i>') );
+					$( '.icon_preview', parent ).html( acf.escHtml('<i class="fa-' + iconJson.family + ' fa-' + iconJson.style + ' fa-' + iconJson.id + ' fa-fw" aria-hidden="true"></i>') );
 					$( '.icon_preview', parent ).removeClass('v5-compat-alert show-alert');
 				}
 			} catch( err ) {
