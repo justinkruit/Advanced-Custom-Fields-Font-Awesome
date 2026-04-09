@@ -2,8 +2,8 @@
 	
 	function update_preview( value, parent ) {
 		var class_prefix = ( ACFFA.major_version >= 5 ) ? '' : 'fa ';
-		$( '.acf-field-setting-fa_live_preview .acf-input', parent ).html( '<i class="' + class_prefix + value + '" aria-hidden="true"></i>' );
-		$( '.icon_preview', parent ).html( '<i class="' + class_prefix + value + '" aria-hidden="true"></i>' );
+		$( '.acf-field-setting-fa_live_preview .acf-input', parent ).html( acf.escHtml('<i class="' + class_prefix + value + '" aria-hidden="true"></i>') );
+		$( '.icon_preview', parent ).html( acf.escHtml('<i class="' + class_prefix + value + '" aria-hidden="true"></i>') );
 	}
 
 	function select2_init_args( element, parent ) {
