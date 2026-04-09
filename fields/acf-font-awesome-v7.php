@@ -1,24 +1,22 @@
 <?php
 
 // exit if accessed directly
-if ( ! defined( 'ABSPATH' ) ) {
+if (! defined('ABSPATH')) {
 	exit;
 }
 
-if ( ! class_exists( 'acf_field_font_awesome' ) ) :
+if (! class_exists('acf_field_font_awesome')) :
 
-	class acf_field_font_awesome extends \acf_field
-	{
+	class acf_field_font_awesome extends \acf_field {
 		private $icons = false;
 		private $version;
 		public	$show_in_rest = true;
 		private $env;
 
-		public function __construct()
-		{
+		public function __construct() {
 			$this->version = 'v' . ACFFA_MAJOR_VERSION;
 			$this->name = 'font-awesome';
-			$this->label = __( 'Font Awesome Icon', 'acf-font-awesome');
+			$this->label = __('Font Awesome Icon', 'acf-font-awesome');
 			$this->category = 'content';
 
 			$this->defaults = [
@@ -34,31 +32,30 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 
 			parent::__construct();
 
-			if ( apply_filters( 'ACFFA_always_enqueue_fa', false ) ) {
-				add_action( 'wp_enqueue_scripts', [ $this, 'frontend_enqueue_scripts' ] );
+			if (apply_filters('ACFFA_always_enqueue_fa', false)) {
+				add_action('wp_enqueue_scripts', [$this, 'frontend_enqueue_scripts']);
 			} else {
-				add_filter( 'acf/load_field', [ $this, 'maybe_enqueue_font_awesome' ] );
+				add_filter('acf/load_field', [$this, 'maybe_enqueue_font_awesome']);
 			}
 
-			add_filter( 'ACFFA_v5_upgrade_compat_selected_field_sets', [ $this, 'v5_upgrade_compat_selected_field_sets' ], 5, 1 );
-			add_filter( 'ACFFA_v5_upgrade_compat_format_value', [ $this, 'v5_upgrade_compat_format_value' ], 5, 2 );
+			add_filter('ACFFA_v5_upgrade_compat_selected_field_sets', [$this, 'v5_upgrade_compat_selected_field_sets'], 5, 1);
+			add_filter('ACFFA_v5_upgrade_compat_format_value', [$this, 'v5_upgrade_compat_format_value'], 5, 2);
 		}
 
-		public function render_field_settings( $field )
-		{
-			if ( apply_filters( 'ACFFA_show_fontawesome_pro_blurbs', true ) ) {
-				acf_render_field_setting( $field, [
-					'label'			=> __( 'Get FontAwesome Pro', 'acf-font-awesome' ),
-					'message'		=> '<p>' . __( 'Support this plugin and get more icons across more styles plus helpful services, regular updates, a lifetime license, and actual human support.', 'acf-font-awesome' ) . '</p>' . '<a class="get-acfpro-btn" target="_blank" href="https://fontawesome.com/referral?a=f4be3e1256"><i class="fa-solid fa-carrot"></i>' . __( 'Upgrade to Font Awesome Pro!', 'acf-font-awesome' ) . '</a>',
+		public function render_field_settings($field) {
+			if (apply_filters('ACFFA_show_fontawesome_pro_blurbs', true)) {
+				acf_render_field_setting($field, [
+					'label'			=> __('Get FontAwesome Pro', 'acf-font-awesome'),
+					'message'		=> '<p>' . __('Support this plugin and get more icons across more styles plus helpful services, regular updates, a lifetime license, and actual human support.', 'acf-font-awesome') . '</p>' . '<a class="get-acfpro-btn" target="_blank" href="https://fontawesome.com/referral?a=f4be3e1256"><i class="fa-solid fa-carrot"></i>' . __('Upgrade to Font Awesome Pro!', 'acf-font-awesome') . '</a>',
 					'type'			=> 'message',
 					'name'			=> 'get-fontawesome-pro',
 					'class'			=> 'get-fontawesome-pro'
-				] );
+				]);
 			}
 
 			$icon_sets_args = [
-				'label'			=> __( 'Icon Sets', 'acf-font-awesome' ),
-				'instructions'	=> __( 'Specify which icon set(s) to load', 'acf-font-awesome' ),
+				'label'			=> __('Icon Sets', 'acf-font-awesome'),
+				'instructions'	=> __('Specify which icon set(s) to load', 'acf-font-awesome'),
 				'type'			=> 'select',
 				'name'			=> 'icon_sets',
 				'multiple'     => 1,
@@ -102,180 +99,157 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 			];
 
 			// Fix duotone family previously saved with no style
-			if ( isset( $field['icon_sets'] ) && is_array( $field['icon_sets'] ) ) {
-				if ( ( $key = array_search( 'duotone', $field['icon_sets'] ) ) !== FALSE ) {
-					$field['icon_sets'][ $key ] = 'duotone_solid';
+			if (isset($field['icon_sets']) && is_array($field['icon_sets'])) {
+				if (($key = array_search('duotone', $field['icon_sets'])) !== FALSE) {
+					$field['icon_sets'][$key] = 'duotone_solid';
 				}
 			}
 
-			$selected_field_sets	= ! empty( $field['icon_sets'] ) ? $field['icon_sets'] : [ 'classic_solid', 'classic_regular', 'brands' ];
-			$selected_field_sets	= apply_filters( 'ACFFA_v5_upgrade_compat_selected_field_sets', $selected_field_sets );
+			$selected_field_sets	= ! empty($field['icon_sets']) ? $field['icon_sets'] : ['classic_solid', 'classic_regular', 'brands'];
+			$selected_field_sets	= apply_filters('ACFFA_v5_upgrade_compat_selected_field_sets', $selected_field_sets);
 
 			$icon_sets_args['value'] = $selected_field_sets;
 
-			acf_render_field_setting( $field, $icon_sets_args );
+			acf_render_field_setting($field, $icon_sets_args);
 
-			$custom_icon_set_choices = get_option( 'ACFFA_custom_icon_sets_list' );
-			if ( isset( $custom_icon_set_choices[ $this->version ] ) && ! empty( $custom_icon_set_choices[ $this->version ] ) ) {
-				$custom_icon_set_choices = $custom_icon_set_choices[ $this->version ];
+			$custom_icon_set_choices = get_option('ACFFA_custom_icon_sets_list');
+			if (isset($custom_icon_set_choices[$this->version]) && ! empty($custom_icon_set_choices[$this->version])) {
+				$custom_icon_set_choices = $custom_icon_set_choices[$this->version];
 			} else {
-				$custom_icon_set_choices = [ __( 'No custom icon set(s) found', 'acf-font-awesome' ) ];
+				$custom_icon_set_choices = [__('No custom icon set(s) found', 'acf-font-awesome')];
 			}
 
-			acf_render_field_setting( $field, [
-				'label'			=> __( 'Custom Icon Set', 'acf-font-awesome' ),
-				'instructions'	=> sprintf( __( 'Create custom icon sets in the <a href="%s">FontAwesome Settings page</a>.', 'acf-font-awesome' ), admin_url( '/edit.php?post_type=acf-field-group&page=fontawesome-settings' ) ),
-				'type'			=> 'select',
-				'name'			=> 'custom_icon_set',
-				'class'	  		=> 'custom-icon-set',
-				'choices'		=> $custom_icon_set_choices,
-				'value'			=> isset( $field['custom_icon_set'] ) ? $field['custom_icon_set'] : false,
-				'placeholder'	=> 'Choose an icon set',
-				'allow_null'	=> 1
-			] );
-
-			acf_render_field_setting( $field, [
-				'label'			=> __( 'Icon Preview', 'acf-font-awesome' ),
-				'instructions'	=> '',
-				'type'			=> 'message',
-				'name'			=> 'fa_live_preview',
-				'class'			=> 'live-preview'
-			] );
-
-			acf_render_field_setting( $field, [
-				'label'			=> __( 'Default Label', 'acf-font-awesome' ),
+			acf_render_field_setting($field, [
+				'label'			=> __('Default Label', 'acf-font-awesome'),
 				'instructions'	=> 'Used internally to store the select label for the default icon. For performance reasons.',
 				'type'			=> 'text',
 				'name'			=> 'default_label',
-				'value'			=> ! empty ( $field['default_label'] ) ? $field['default_label'] : $field['default_value'],
+				'value'			=> ! empty($field['default_label']) ? $field['default_label'] : $field['default_value'],
 				'class'			=> 'default_value'
-			] );
+			]);
 
-			acf_render_field_setting( $field, [
-				'label'			=> __( 'Default Icon', 'acf-font-awesome' ),
+			acf_render_field_setting($field, [
+				'label'			=> __('Default Icon', 'acf-font-awesome'),
 				'instructions'	=> '',
-				'type'			=> 'select',
+				'type'			=> 'text',
 				'name'			=> 'default_value',
-				'class'	  		=> 'select2-fontawesome fontawesome-create',
-				'choices'		=>  ! empty( $field['default_label'] ) ? [ $field['default_value'] => html_entity_decode( $field['default_label'] ) ] : [ $field['default_value'] => $field['default_value'] ],
-				'value'			=> $field['default_value'],
+				'class'	  		=> 'acffa-default-icon',
+				'value'			=> $field['default_value'] ?? '',
 				'placeholder'	=> 'Choose a default icon (optional)',
-				'ui'			=> 1,
 				'allow_null'	=> 1,
-				'ajax'			=> 1,
-				'ajax_action'	=> 'acf/fields/font-awesome/query'
-			] );
+			]);
 
-			acf_render_field_setting( $field, [
-				'label'			=> __( 'Return Value', 'acf-font-awesome' ),
-				'instructions'	=> __( 'Specify the returned value on front end', 'acf-font-awesome' ),
+			acf_render_field_setting($field, [
+				'label'			=> __('Return Value', 'acf-font-awesome'),
+				'instructions'	=> __('Specify the returned value on front end', 'acf-font-awesome'),
 				'type'			=> 'radio',
 				'name'			=> 'save_format',
 				'choices'	=>	[
-					'element'	=>	__( 'Icon Element', 'acf-font-awesome' ),
-					'class'		=>	__( 'Icon Class', 'acf-font-awesome' ),
-					'unicode'	=>	__( 'Icon Unicode', 'acf-font-awesome' ),
-					'object'	=>	__( 'Icon Object', 'acf-font-awesome' ),
+					'element'	=>	__('Icon Element', 'acf-font-awesome'),
+					'class'		=>	__('Icon Class', 'acf-font-awesome'),
+					'unicode'	=>	__('Icon Unicode', 'acf-font-awesome'),
+					'object'	=>	__('Icon Object', 'acf-font-awesome'),
 				]
-			] );
+			]);
 
-			acf_render_field_setting( $field, [
-				'label'			=> __( 'Allow Null?', 'acf-font-awesome' ),
+			acf_render_field_setting($field, [
+				'label'			=> __('Allow Null?', 'acf-font-awesome'),
 				'instructions'	=> '',
 				'type'			=> 'radio',
 				'name'			=> 'allow_null',
 				'choices'	=>	[
-					1	=>	__( 'Yes', 'acf-font-awesome' ),
-					0	=>	__( 'No', 'acf-font-awesome' )
+					1	=>	__('Yes', 'acf-font-awesome'),
+					0	=>	__('No', 'acf-font-awesome')
 				]
-			] );
+			]);
 
-			acf_render_field_setting( $field, [
-				'label'			=> __( 'Show Icon Preview', 'acf-font-awesome' ),
-				'instructions'	=> __( 'Set to \'Yes\' to include a larger icon preview on any admin pages using this field.', 'acf-font-awesome' ),
+			acf_render_field_setting($field, [
+				'label'			=> __('Show Icon Preview', 'acf-font-awesome'),
+				'instructions'	=> __('Set to \'Yes\' to include a larger icon preview on any admin pages using this field.', 'acf-font-awesome'),
 				'type'			=> 'radio',
 				'name'			=> 'show_preview',
 				'choices'	=>	[
-					1	=>	__( 'Yes', 'acf-font-awesome' ),
-					0	=>	__( 'No', 'acf-font-awesome' )
+					1	=>	__('Yes', 'acf-font-awesome'),
+					0	=>	__('No', 'acf-font-awesome')
 				]
-			] );
+			]);
 
-			if ( ! apply_filters( 'ACFFA_always_enqueue_fa', false ) ) {
-				acf_render_field_setting( $field, [
-					'label'			=> __( 'Enqueue FontAwesome?', 'acf-font-awesome' ),
-					'instructions'	=> __( 'Set to \'Yes\' to enqueue FA in the footer on any pages using this field.', 'acf-font-awesome' ),
+			if (! apply_filters('ACFFA_always_enqueue_fa', false)) {
+				acf_render_field_setting($field, [
+					'label'			=> __('Enqueue FontAwesome?', 'acf-font-awesome'),
+					'instructions'	=> __('Set to \'Yes\' to enqueue FA in the footer on any pages using this field.', 'acf-font-awesome'),
 					'type'			=> 'radio',
 					'name'			=> 'enqueue_fa',
 					'choices'	=>	[
-						1	=>	__( 'Yes', 'acf-font-awesome' ),
-						0	=>	__( 'No', 'acf-font-awesome' )
+						1	=>	__('Yes', 'acf-font-awesome'),
+						0	=>	__('No', 'acf-font-awesome')
 					]
-				] );
+				]);
 			}
 		}
 
-		public function render_field( $field )
-		{
-			if ( $field['allow_null'] ) {
+		public function render_field($field) {
+			if ($field['allow_null']) {
 				$select_value = $field['value'];
 			} else {
-				$select_value = ( 'null' != $field['value'] ) ? $field['value'] : $field['default_value'];
+				$select_value = ('null' != $field['value']) ? $field['value'] : $field['default_value'];
 			}
 
 			$v5_icon_preselected = false;
 
-			$field['type']		= 'select';
-			$field['ui']		= 1;
-			$field['ajax']		= 1;
-			$field['choices']	= [];
-			$field['multiple']	= false;
-			$field['class']		= $v5_icon_preselected ? 'v5_icon_preselected' : '';
-			if ( ! empty( $field['icon_sets'] ) && in_array( 'custom', $field['icon_sets'] ) && ! empty( $field['custom_icon_set'] ) ) {
-				$field['class'] .= ' fa6 select2-fontawesome fontawesome-edit custom-icon-set';
-			} else {
-				$field['class'] .= ' fa6 select2-fontawesome fontawesome-edit';
-			}
+			$field['type']		= 'text';
+			$field['value']		= $select_value;
+			$field['icon_sets']	= isset($field['icon_sets']) ? apply_filters('ACFFA_standardize_icon_set_family_style', $field['icon_sets']) : ['classic_solid', 'classic_regular', 'brands'];
+			$field['prepend'] = '';
+			$field['append'] = '';
+			$field['class']		= $v5_icon_preselected ? 'v5_icon_preselected selected-icon hidden' : 'selected-icon hidden';
 
-			if ( $select_value ) :
-				$icon_info = json_decode( $select_value );
-				if ( is_object( $icon_info ) ) {
-					$family = isset( $icon_info->family ) ? $icon_info->family : apply_filters( 'ACFFA_default_family_by_style', 'classic', $icon_info->style );
-					$style = isset( $icon_info->style ) ? $icon_info->style : '';
+			if ($select_value) :
+				$icon_info = json_decode($select_value);
+				if (is_object($icon_info)) {
+					$family = isset($icon_info->family) ? $icon_info->family : apply_filters('ACFFA_default_family_by_style', 'classic', $icon_info->style);
+					$style = isset($icon_info->style) ? $icon_info->style : '';
 					$classes = [];
-					if ( 'classic' !== $family ) {
-						$classes[] = 'fa-' . str_replace( '_', '-', $family );
+					if ('classic' !== $family) {
+						$classes[] = 'fa-' . str_replace('_', '-', $family);
 					}
-					if ( $style ) {
+					if ($style) {
 						$classes[] = 'fa-' . $style;
 					}
 					$classes[] = 'fa-' . $icon_info->id;
-					$field['choices'][ $select_value ] = '<i class="' . implode( ' ', $classes ) . ' fa-fw"></i> ' . $icon_info->label;
 				} else {
 					$v5_icon_preselected	= true;
-					$options				= get_option( 'acffa_settings' );
-					$label					= isset( $options['acffa_v5_compatibility_mode'] ) && $options['acffa_v5_compatibility_mode'] ? '[v5-compat-lookup]' : false;
-
-					$field['choices'][ $select_value ] = $label;
+					$options				= get_option('acffa_settings');
+					$label					= isset($options['acffa_v5_compatibility_mode']) && $options['acffa_v5_compatibility_mode'] ? '[v5-compat-lookup]' : false;
 				}
 			endif;
 
-			if ( $field['show_preview'] ) :
-				if ( $v5_icon_preselected ) :
-					?>
+			if ($field['show_preview']) :
+				if ($v5_icon_preselected) :
+?>
 					<div class="icon_preview v5-compat-alert show-alert">
 						<i class="fas fa-exclamation-circle"></i>
 					</div>
-					<?php
+				<?php
 				else :
-					?>
-					<div class="icon_preview"></div>
-					<?php
+				?>
+					<?php if (isset($icon_info) && is_object($icon_info)) : ?>
+						<div class="icon_preview">
+							<i class="<?php echo esc_attr(implode(' ', $classes)); ?>"></i>
+						</div>
+					<?php else : ?>
+						<div class="icon_preview">
+						</div>
+					<?php endif; ?>
+					<button type="button" class="button fa-icon-chooser-open"><?php _e('Choose icon', 'acf-font-awesome'); ?></button>
+					<input type="hidden" name="acffa_nonce" class="acffa-nonce" value="<?= esc_attr(wp_create_nonce('acffa_nonce')); ?>" />
+					<input type="hidden" name="icon_sets" class="icon-sets" value="<?= esc_attr(implode(',', $field['icon_sets'])); ?>" />
+				<?php
 				endif;
 			endif;
 
-			if ( $v5_icon_preselected ) :
-				$previous_icon_info = $this->get_previous_icon_info( $select_value );
+			if ($v5_icon_preselected) :
+				$previous_icon_info = $this->get_previous_icon_info($select_value);
 				?>
 				<div class="v5-compat-message" aria-label="<?php esc_html_e( 'This FontAwesome v5 Pro icon cannot be automatically translated to its v6 equivalent and will need to be reselected before saving this post/page.', 'acf-font-awesome' ); ?>" data-microtip-size="large" data-microtip-position="top" role="tooltip">
 					<?php echo sprintf (esc_html__( 'Please reselect your FontAwesome Icon.', 'acf-font-awesome' ), 'SOLID', 'COFFEE' ); ?> <i class="fas fa-question-circle"></i>
@@ -292,87 +266,89 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 						endif;
 					?>
 				</div>
-				<?php
+<?php
 			endif;
 
-			acf_render_field( $field );
+			acf_render_field($field);
 		}
 
-		public function input_admin_enqueue_scripts()
-		{
+		public function input_admin_enqueue_scripts() {
 			$version		= ACFFA_VERSION;
-			$options		= get_option( 'acffa_settings' );
-			$latest_version	= apply_filters( 'ACFFA_get_latest_version', '6.0.0' );
+			$options		= get_option('acffa_settings');
+			$latest_version	= apply_filters('ACFFA_get_latest_version', '6.0.0');
 
-			if ( isset( $options['acffa_v5_compatibility_mode'] ) && $options['acffa_v5_compatibility_mode'] ) {
-				wp_enqueue_script( 'acffa_fontawesome-js-api', "https://use.fontawesome.com/releases/v$latest_version/js/all.js", [], $latest_version );
+			if (isset($options['acffa_v5_compatibility_mode']) && $options['acffa_v5_compatibility_mode']) {
+				wp_enqueue_script('acffa_fontawesome-js-api', "https://use.fontawesome.com/releases/v$latest_version/js/all.js", [], $latest_version);
 			}
-			wp_enqueue_script( 'acf-input-font-awesome', ACFFA_PUBLIC_PATH . "assets/js/input-v6.js", [ 'acf-input' ], $version );
-			wp_localize_script( 'acf-input-font-awesome', 'ACFFA', [
+			wp_register_script_module('acffa-icon-chooser-module', ACFFA_PUBLIC_PATH . "assets/js/fa-icon-chooser.esm.js", [], '0.9.1');
+			wp_enqueue_script_module('acffa-icon-chooser-module');
+			wp_enqueue_script('acf-input-font-awesome', ACFFA_PUBLIC_PATH . "assets/js/input-v7.js", ['acf-input'], $version);
+			wp_localize_script('acf-input-font-awesome', 'ACFFA', [
 				'major_version'		=> ACFFA_MAJOR_VERSION,
-				'v5_compat_mode'	=> isset( $options['acffa_v5_compatibility_mode'] ) && $options['acffa_v5_compatibility_mode'] ? true : false
-			] );
+				'v5_compat_mode'	=> isset($options['acffa_v5_compatibility_mode']) && $options['acffa_v5_compatibility_mode'] ? true : false,
+				'kit_token'			=> apply_filters('ACFFA_fontawesome_kit_token', false),
+				'latest_version'	=> $latest_version,
+				'nonce'				=> wp_create_nonce('acffa_nonce'),
+				'ajax_url'			=> admin_url('admin-ajax.php')
+			]);
 
-			wp_enqueue_style( 'acf-input-microtip', ACFFA_PUBLIC_PATH . "assets/inc/microtip/microtip.min.css", [], '1.0.0' );
-			wp_enqueue_style( 'acf-input-font-awesome', ACFFA_PUBLIC_PATH . "assets/css/input.css", [ 'acf-input' ], $version );
+			wp_enqueue_style('acf-input-microtip', ACFFA_PUBLIC_PATH . "assets/inc/microtip/microtip.min.css", [], '1.0.0');
+			wp_enqueue_style('acf-input-font-awesome', ACFFA_PUBLIC_PATH . "assets/css/input.css", ['acf-input'], $version);
 
-			if ( apply_filters( 'ACFFA_admin_enqueue_fa', true ) ) {
-				$fa_url = apply_filters( 'ACFFA_get_fa_url', '' );
-				if ( stristr( $fa_url, 'https://kit.fontawesome.com/' ) ) {
-					wp_enqueue_script( 'acffa_font-awesome-kit', $fa_url );
+			if (apply_filters('ACFFA_admin_enqueue_fa', true)) {
+				$fa_url = apply_filters('ACFFA_get_fa_url', '');
+				if (stristr($fa_url, 'https://kit.fontawesome.com/')) {
+					wp_enqueue_script('acffa_font-awesome-kit', $fa_url);
 				} else {
-					wp_enqueue_style( 'acffa_font-awesome', $fa_url, [ 'acf-input' ], $latest_version );
+					wp_enqueue_style('acffa_font-awesome', $fa_url, ['acf-input'], $latest_version);
 				}
 			}
 		}
 
-		public function maybe_enqueue_font_awesome( $field )
-		{
-			if ( 'font-awesome' == $field['type'] && $field['enqueue_fa'] ) {
-				add_action( 'wp_footer', [ $this, 'frontend_enqueue_scripts' ] );
+		public function maybe_enqueue_font_awesome($field) {
+			if ('font-awesome' == $field['type'] && $field['enqueue_fa']) {
+				add_action('wp_footer', [$this, 'frontend_enqueue_scripts']);
 			}
 
 			return $field;
 		}
 
-		public function frontend_enqueue_scripts()
-		{
-			$fa_url = apply_filters( 'ACFFA_get_fa_url', '' );
-			if ( stristr( $fa_url, 'https://kit.fontawesome.com/' ) ) {
-				wp_enqueue_script( 'acffa_font-awesome-kit', $fa_url );
+		public function frontend_enqueue_scripts() {
+			$fa_url = apply_filters('ACFFA_get_fa_url', '');
+			if (stristr($fa_url, 'https://kit.fontawesome.com/')) {
+				wp_enqueue_script('acffa_font-awesome-kit', $fa_url);
 			} else {
-				$latest_version	= apply_filters( 'ACFFA_get_latest_version', '6.0.0' );
-				wp_enqueue_style( 'acffa_font-awesome', $fa_url, [], $latest_version );
+				$latest_version	= apply_filters('ACFFA_get_latest_version', '6.0.0');
+				wp_enqueue_style('acffa_font-awesome', $fa_url, [], $latest_version);
 			}
 		}
 
-		public function format_value( $value, $post_id, $field )
-		{
-			if ( 'null' == $value ) {
+		public function format_value($value, $post_id, $field) {
+			if ('null' == $value) {
 				return false;
 			}
 
-			if ( empty( $value ) ) {
+			if (empty($value)) {
 				return $value;
 			}
 
-			$icon_json = json_decode( $value );
+			$icon_json = json_decode($value);
 
-			if ( is_object( $icon_json ) ) {
-				$family = isset( $icon_json->family ) ? $icon_json->family : apply_filters( 'ACFFA_default_family_by_style', 'classic', $icon_json->style );
-				$style = isset( $icon_json->style ) ? $icon_json->style : '';
+			if (is_object($icon_json)) {
+				$family = isset($icon_json->family) ? $icon_json->family : apply_filters('ACFFA_default_family_by_style', 'classic', $icon_json->style);
+				$style = isset($icon_json->style) ? $icon_json->style : '';
 				$classes = [];
 				if ('classic' !== $family) {
 					$classes[] = 'fa-' . str_replace('_', '-', $family);
 				}
-				if ( $style ) {
+				if ($style) {
 					$classes[] = 'fa-' . $style;
 				}
 				$classes[] = 'fa-' . $icon_json->id;
-				$class = implode( ' ', $classes );
-				$prefix = implode( ' ', array_slice( $classes, 0, -1 ) );
+				$class = implode(' ', $classes);
+				$prefix = implode(' ', array_slice($classes, 0, -1));
 
-				switch ( $field['save_format'] ) {
+				switch ($field['save_format']) {
 					case 'element':
 						$value = '<i class="' . esc_attr($class) . '" aria-hidden="true"></i>';
 						break;
@@ -397,11 +373,11 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 							'unicode' 	=> '&#x' . $icon_json->unicode . ';'
 						];
 
-						if ( 'fak' == $icon_json->style || 'custom' == $icon_json->style ) {
+						if ('fak' == $icon_json->style || 'custom' == $icon_json->style) {
 							$path_data_element = '<svg class="svg-inline--fa" viewBox="0 0 ' . $icon_json->width . ' ' . $icon_json->height . '">';
-							if ( is_array( $icon_json->path ) ) {
-								foreach ( $icon_json->path as $path ) {
-									if ( ! empty( $path ) ) {
+							if (is_array($icon_json->path)) {
+								foreach ($icon_json->path as $path) {
+									if (! empty($path)) {
 										$path_data_element .= '<path d="' . $path . '" />';
 									}
 								}
@@ -411,50 +387,49 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 							$path_data_element .= '</svg>';
 
 							$svg_data = [
-								'element'	=> isset( $icon_json->html ) ? $icon_json->html : $path_data_element,
+								'element'	=> isset($icon_json->html) ? $icon_json->html : $path_data_element,
 								'path'		=> $icon_json->path,
 								'height'	=> $icon_json->height,
 								'width'		=> $icon_json->width
 							];
-							$object_data['svg'] = ( object ) $svg_data;
+							$object_data['svg'] = (object) $svg_data;
 						}
 
-						$value = ( object ) $object_data;
+						$value = (object) $object_data;
 						break;
 				}
 			} else {
-				$value = apply_filters( 'ACFFA_v5_upgrade_compat_format_value', $value, $field['save_format'] );
+				$value = apply_filters('ACFFA_v5_upgrade_compat_format_value', $value, $field['save_format']);
 			}
 
 			return $value;
 		}
 
-		public function v5_upgrade_compat_format_value( $value, $save_format )
-		{
-			if ( 'false' == $value ) {
+		public function v5_upgrade_compat_format_value($value, $save_format) {
+			if ('false' == $value) {
 				return;
 			}
 
-			$icons		= get_option( 'ACFFA_icon_data' );
-			$version	= get_option( 'ACFFA_current_version', '5.15.4' );
+			$icons		= get_option('ACFFA_icon_data');
+			$version	= get_option('ACFFA_current_version', '5.15.4');
 
-			if ( ! $icons || ! isset( $icons[ $version ] ) ) {
+			if (! $icons || ! isset($icons[$version])) {
 				return $value;
 			}
 
-			$icons = $icons[ $version ];
+			$icons = $icons[$version];
 
-			if ( version_compare( $version, 5, '<' ) ) {
-				$icon = isset( $icons['details'][ $value ] ) ? $icons['details'][ $value ] : false;
+			if (version_compare($version, 5, '<')) {
+				$icon = isset($icons['details'][$value]) ? $icons['details'][$value] : false;
 			} else {
-				$prefix = substr( $value, 0, 3 );
-				$icon = isset( $icons['details'][ $prefix ][ $value ] ) ? $icons['details'][ $prefix ][ $value ] : false;
+				$prefix = substr($value, 0, 3);
+				$icon = isset($icons['details'][$prefix][$value]) ? $icons['details'][$prefix][$value] : false;
 			}
 
-			if ( $icon ) {
-				switch ( $save_format ) {
+			if ($icon) {
+				switch ($save_format) {
 					case 'element':
-						if ( version_compare( $version, 5, '<' ) ) {
+						if (version_compare($version, 5, '<')) {
 							$value = '<i class="fa ' . $value . '" aria-hidden="true"></i>';
 						} else {
 							$value = '<i class="' . $value . '" aria-hidden="true"></i>';
@@ -473,11 +448,11 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 							'unicode' => $icon['unicode']
 						);
 
-						if ( version_compare( $version, 5, '>=' ) ) {
+						if (version_compare($version, 5, '>=')) {
 							$object_data['prefix'] = $prefix;
 						}
 
-						$value = ( object ) $object_data;
+						$value = (object) $object_data;
 						break;
 				}
 			}
@@ -485,33 +460,32 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 			return $value;
 		}
 
-		public function v5_upgrade_compat_selected_field_sets( $selected_field_sets )
-		{
-			if ( is_array( $selected_field_sets ) && ! empty( $selected_field_sets ) ) {
-				foreach ( $selected_field_sets as $key => $field_set ) {
-					switch ( $field_set ) {
+		public function v5_upgrade_compat_selected_field_sets($selected_field_sets) {
+			if (is_array($selected_field_sets) && ! empty($selected_field_sets)) {
+				foreach ($selected_field_sets as $key => $field_set) {
+					switch ($field_set) {
 						case 'fas':
-							unset( $selected_field_sets[ $key ] );
+							unset($selected_field_sets[$key]);
 							$selected_field_sets[] = 'solid';
 							break;
 
 						case 'far':
-							unset( $selected_field_sets[ $key ] );
+							unset($selected_field_sets[$key]);
 							$selected_field_sets[] = 'regular';
 							break;
 
 						case 'fal':
-							unset( $selected_field_sets[ $key ] );
+							unset($selected_field_sets[$key]);
 							$selected_field_sets[] = 'light';
 							break;
 
 						case 'fad':
-							unset( $selected_field_sets[ $key ] );
+							unset($selected_field_sets[$key]);
 							$selected_field_sets[] = 'duotone';
 							break;
 
 						case 'fab':
-							unset( $selected_field_sets[ $key ] );
+							unset($selected_field_sets[$key]);
 							$selected_field_sets[] = 'brands';
 							break;
 					}
@@ -521,25 +495,24 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 			return $selected_field_sets;
 		}
 
-		private function get_previous_icon_info( $previous_icon )
-		{
-			if ( ! $previous_icon || 'false' == $previous_icon ) {
+		private function get_previous_icon_info($previous_icon) {
+			if (! $previous_icon || 'false' == $previous_icon) {
 				return;
 			}
 
-			if ( 0 === strpos( $previous_icon, 'fa-' ) ) {
+			if (0 === strpos($previous_icon, 'fa-')) {
 				$icon_info	= [
-					'name'	=> preg_replace('/-o$/', '', substr( $previous_icon, 3 ) )
+					'name'	=> preg_replace('/-o$/', '', substr($previous_icon, 3))
 				];
 			} else {
 				$icon_info	= [
 					'style'	=> '',
-					'name'	=> substr( $previous_icon, 7 )
+					'name'	=> substr($previous_icon, 7)
 				];
 
-				$prefix = substr( $previous_icon, 0, 3 );
+				$prefix = substr($previous_icon, 0, 3);
 
-				switch ( $prefix ) {
+				switch ($prefix) {
 					case 'fas':
 						$icon_info['style'] = 'solid';
 						break;
@@ -564,9 +537,8 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 
 			return $icon_info;
 		}
-
 	}
 
-	acf_register_field_type( 'acf_field_font_awesome' );
+	acf_register_field_type('acf_field_font_awesome');
 
 endif;
