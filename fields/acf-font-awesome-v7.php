@@ -93,7 +93,7 @@ if (! class_exists('acf_field_font_awesome')) :
 				'utility_semisolid'      => __('Utility (Solid)', 'acf-font-awesome'),
 				'utility-duo_semisolid'  => __('Utility Duo (Solid)', 'acf-font-awesome'),
 				'utility-fill_semisolid' => __('Utility Fill (Solid)', 'acf-font-awesome'),
-				'fak'                    => __( 'Uploaded Icons', 'acf-font-awesome' ),
+				'fak'                    => __('Uploaded Icons', 'acf-font-awesome'),
 				'brands'                 => __('Brands', 'acf-font-awesome'),
 				'custom'                 => __('Custom Icon Set', 'acf-font-awesome')
 			];
@@ -241,29 +241,29 @@ if (! class_exists('acf_field_font_awesome')) :
 						<div class="icon_preview">
 						</div>
 					<?php endif; ?>
-					<button type="button" class="button fa-icon-chooser-open"><?php _e('Choose icon', 'acf-font-awesome'); ?></button>
-					<input type="hidden" name="acffa_nonce" class="acffa-nonce" value="<?= esc_attr(wp_create_nonce('acffa_nonce')); ?>" />
-					<input type="hidden" name="icon_sets" class="icon-sets" value="<?= esc_attr(implode(',', $field['icon_sets'])); ?>" />
-				<?php
-				endif;
+				<?php endif; ?>
+				<button type="button" class="button fa-icon-chooser-open"><?php _e('Choose icon', 'acf-font-awesome'); ?></button>
+				<input type="hidden" name="acffa_nonce" class="acffa-nonce" value="<?= esc_attr(wp_create_nonce('acffa_nonce')); ?>" />
+				<input type="hidden" name="icon_sets" class="icon-sets" value="<?= esc_attr(implode(',', $field['icon_sets'])); ?>" />
+			<?php
 			endif;
 
 			if ($v5_icon_preselected) :
 				$previous_icon_info = $this->get_previous_icon_info($select_value);
-				?>
-				<div class="v5-compat-message" aria-label="<?php esc_html_e( 'This FontAwesome v5 Pro icon cannot be automatically translated to its v6 equivalent and will need to be reselected before saving this post/page.', 'acf-font-awesome' ); ?>" data-microtip-size="large" data-microtip-position="top" role="tooltip">
-					<?php echo sprintf (esc_html__( 'Please reselect your FontAwesome Icon.', 'acf-font-awesome' ), 'SOLID', 'COFFEE' ); ?> <i class="fas fa-question-circle"></i>
+			?>
+				<div class="v5-compat-message" aria-label="<?php esc_html_e('This FontAwesome v5 Pro icon cannot be automatically translated to its v6 equivalent and will need to be reselected before saving this post/page.', 'acf-font-awesome'); ?>" data-microtip-size="large" data-microtip-position="top" role="tooltip">
+					<?php echo sprintf(esc_html__('Please reselect your FontAwesome Icon.', 'acf-font-awesome'), 'SOLID', 'COFFEE'); ?> <i class="fas fa-question-circle"></i>
 					<?php
-						if ( isset( $previous_icon_info['style'] ) && ! empty( $previous_icon_info['style'] ) ) :
-							?>
-							<em><?php esc_html_e( 'Style:', 'acf-font-awesome' ); ?></em> <strong><?php echo esc_html( $previous_icon_info['style'] ); ?></strong>
-							<?php
-						endif;
-						if ( isset( $previous_icon_info['name'] ) && ! empty( $previous_icon_info['name'] ) ) :
-							?>
-							<em><?php esc_html_e( 'Name:', 'acf-font-awesome' ); ?></em> <strong><?php echo esc_html( $previous_icon_info['name'] ); ?></strong>
-							<?php
-						endif;
+					if (isset($previous_icon_info['style']) && ! empty($previous_icon_info['style'])) :
+					?>
+						<em><?php esc_html_e('Style:', 'acf-font-awesome'); ?></em> <strong><?php echo esc_html($previous_icon_info['style']); ?></strong>
+					<?php
+					endif;
+					if (isset($previous_icon_info['name']) && ! empty($previous_icon_info['name'])) :
+					?>
+						<em><?php esc_html_e('Name:', 'acf-font-awesome'); ?></em> <strong><?php echo esc_html($previous_icon_info['name']); ?></strong>
+					<?php
+					endif;
 					?>
 				</div>
 <?php
