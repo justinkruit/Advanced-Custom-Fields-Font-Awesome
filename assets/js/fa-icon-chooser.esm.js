@@ -38,8 +38,18 @@ import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.10.2/dist/fa
     }
 
     const data = await res.json();
-    if (data.errors) throw new Error('Font Awesome API returned errors');
-    return data.data;
+
+    if (!data.success) {
+      throw new Error('Font Awesome API request was not successful');
+    }
+
+    const payload = data.data || {};
+    if (payload.errors) {
+      console.error('Font Awesome API errors:', payload.errors);
+      throw new Error('Font Awesome API returned errors');
+    }
+
+    return payload;
   }
 
   function includeFamilyStyle(familyStyle) {
@@ -186,7 +196,7 @@ import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.10.2/dist/fa
 
     let inputWrapper = defaultValueWrapper.find('.acf-input');
     inputWrapper.prepend(
-      '<div class="icon_preview"></div><button type="button" class="fa-icon-chooser-open button">Choose icon</button>'
+      '<div class="icon_preview"></div><button type="button" class="fa-icon-chooser-open button">Choose icon</button>',
     );
 
     // Initialize preview based on existing value
@@ -216,13 +226,13 @@ import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.10.2/dist/fa
     'ready_field/type=font-awesome append_field/type=font-awesome show_field/type=font-awesome new_field/type=font-awesome',
     function ($el) {
       setupFieldActions($el);
-    }
+    },
   );
 
   acf.add_action(
     'open_field/type=font-awesome change_field_type/type=font-awesome',
     function ($el) {
       setupEditFieldActions($el);
-    }
+    },
   );
 })(jQuery);

@@ -47,7 +47,7 @@ class ACFFA_Loader_7 {
 		check_ajax_referer('acffa_nonce', 'nonce');
 
 		$query = isset($_POST['query']) ? sanitize_text_field(wp_unslash($_POST['query'])) : '';
-		$variables = isset($_POST['variables']) ? wp_unslash($_POST['variables']) : [];
+		$variables = isset($_POST['variables']) ? json_decode(wp_unslash($_POST['variables']), true) : [];
 
 		$body = [
 			'query'		=> $query,
