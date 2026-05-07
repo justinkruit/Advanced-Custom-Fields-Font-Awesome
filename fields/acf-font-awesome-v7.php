@@ -242,7 +242,7 @@ if (! class_exists('acf_field_font_awesome')) :
 						</div>
 					<?php endif; ?>
 				<?php endif; ?>
-				<button type="button" class="button fa-icon-chooser-open"><?php _e('Choose icon', 'acf-font-awesome'); ?></button>
+				<button type="button" class="button fa-icon-chooser-open"><?php esc_html_e('Choose icon', 'acf-font-awesome'); ?></button>
 				<input type="hidden" name="acffa_nonce" class="acffa-nonce" value="<?= esc_attr(wp_create_nonce('acffa_nonce')); ?>" />
 				<input type="hidden" name="icon_sets" class="icon-sets" value="<?= esc_attr(implode(',', $field['icon_sets'])); ?>" />
 			<?php
