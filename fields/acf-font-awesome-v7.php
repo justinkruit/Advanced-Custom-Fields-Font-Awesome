@@ -93,6 +93,7 @@ if (! class_exists('acf_field_font_awesome')) :
 				'utility_semisolid'      => __('Utility (Solid)', 'acf-font-awesome'),
 				'utility-duo_semisolid'  => __('Utility Duo (Solid)', 'acf-font-awesome'),
 				'utility-fill_semisolid' => __('Utility Fill (Solid)', 'acf-font-awesome'),
+				'graphite_thin'          => __('Graphite (Thin)', 'acf-font-awesome'),
 				'fak'                    => __('Uploaded Icons', 'acf-font-awesome'),
 				'brands'                 => __('Brands', 'acf-font-awesome')
 			];
