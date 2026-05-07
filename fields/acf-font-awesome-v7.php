@@ -112,13 +112,6 @@ if (! class_exists('acf_field_font_awesome')) :
 
 			acf_render_field_setting($field, $icon_sets_args);
 
-			$custom_icon_set_choices = get_option('ACFFA_custom_icon_sets_list');
-			if (isset($custom_icon_set_choices[$this->version]) && ! empty($custom_icon_set_choices[$this->version])) {
-				$custom_icon_set_choices = $custom_icon_set_choices[$this->version];
-			} else {
-				$custom_icon_set_choices = [__('No custom icon set(s) found', 'acf-font-awesome')];
-			}
-
 			acf_render_field_setting($field, [
 				'label'			=> __('Default Label', 'acf-font-awesome'),
 				'instructions'	=> 'Used internally to store the select label for the default icon. For performance reasons.',
