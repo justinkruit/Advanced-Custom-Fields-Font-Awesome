@@ -280,7 +280,7 @@ if (! class_exists('acf_field_font_awesome')) :
 			if (isset($options['acffa_v5_compatibility_mode']) && $options['acffa_v5_compatibility_mode']) {
 				wp_enqueue_script('acffa_fontawesome-js-api', "https://use.fontawesome.com/releases/v$latest_version/js/all.js", [], $latest_version);
 			}
-			wp_register_script_module('acffa-icon-chooser-module', ACFFA_PUBLIC_PATH . "assets/js/fa-icon-chooser.esm.js", [], '0.9.1');
+			wp_register_script_module('acffa-icon-chooser-module', ACFFA_PUBLIC_PATH . "assets/js/fa-icon-chooser.esm.js", [], $version);
 			wp_enqueue_script_module('acffa-icon-chooser-module');
 			wp_enqueue_script('acf-input-font-awesome', ACFFA_PUBLIC_PATH . "assets/js/input-v7.js", ['acf-input'], $version);
 			wp_localize_script('acf-input-font-awesome', 'ACFFA', [
