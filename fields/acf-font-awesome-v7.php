@@ -94,8 +94,7 @@ if (! class_exists('acf_field_font_awesome')) :
 				'utility-duo_semisolid'  => __('Utility Duo (Solid)', 'acf-font-awesome'),
 				'utility-fill_semisolid' => __('Utility Fill (Solid)', 'acf-font-awesome'),
 				'fak'                    => __('Uploaded Icons', 'acf-font-awesome'),
-				'brands'                 => __('Brands', 'acf-font-awesome'),
-				'custom'                 => __('Custom Icon Set', 'acf-font-awesome')
+				'brands'                 => __('Brands', 'acf-font-awesome')
 			];
 
 			// Fix duotone family previously saved with no style
