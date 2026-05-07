@@ -2,9 +2,9 @@
 === Advanced Custom Fields: Font Awesome Field ===
 Contributors: justinkruit, mattkeys
 Tags: Advanced Custom Fields, ACF, Font Awesome, FontAwesome
-Requires at least: 3.5
+Requires at least: 6.5
 Tested up to: 6.9
-Stable tag: 5.0.2
+Stable tag: 6.0.0
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,12 @@ This notification message is filterable so you can customize it to better repres
 2. Searchable list of all icons, including large live preview
 
 == Changelog ==
+
+= 6.0.0 =
+* New FontAwesome 7.x icon picker powered by the official FontAwesome Icon Chooser web component for a richer icon selection experience.
+* Deprecated the "Icon Set Builder" feature for FontAwesome 7.x users. The Icon Set Builder continues to work as before for FontAwesome 4.x, 5.x, and 6.x users.
+* Added support for the new FontAwesome "Graphite" family of icons.
+* Updated "Requires at least" compatibility: FontAwesome 7.x features require WordPress 6.5+ for script module support.
 
 = 5.0.2 =
 **Note: The next bigger update will have changes to the way icons are being selected when using FontAwesome 7.x to utilize new and future features from FontAwesome. Unfortunately this means we will be deprecating the “Icon Set Builder” feature to better align this plugin with the FontAwesome ecosystem. This change will only effect users using FontAwesome 7.x icons. The Icon Set Builder will continue to work as it has with previous versions of FontAwesome. We welcome your feedback on this change.**
