@@ -538,6 +538,7 @@ class ACFFA_Loader_7 {
 			'brands'	=> 'classic_brands',
 			'duotone'	=> 'duotone_solid',
 			'custom'	=> 'kit_custom',
+			'fak'		  => 'kit_custom'
 		];
 
 		foreach ($icon_set as $key => $value) {
