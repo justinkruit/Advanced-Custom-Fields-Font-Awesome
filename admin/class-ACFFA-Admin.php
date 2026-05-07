@@ -389,48 +389,50 @@ class ACFFA_Admin
 			]
 		);
 
-		add_settings_section(
-			'acffa_section_icon_set_builder',
-			__( 'Icon Set Builder', 'acf-font-awesome' ),
-			[ $this, 'acffa_section_icon_set_builder_cb' ],
-			'acffa'
-		);
+		if (version_compare(ACFFA_MAJOR_VERSION, 7, '<')) {
+			add_settings_section(
+				'acffa_section_icon_set_builder',
+				__('Icon Set Builder', 'acf-font-awesome'),
+				[$this, 'acffa_section_icon_set_builder_cb'],
+				'acffa'
+			);
 
-		add_settings_field(
-			'acffa_new_icon_set_label',
-			__( 'New Icon Set Label', 'acf-font-awesome' ),
-			[ $this, 'acffa_new_icon_set_label_cb' ],
-			'acffa',
-			'acffa_section_icon_set_builder',
-			[
-				'label_for'	=> 'acffa_new_icon_set_label',
-				'class'		=> 'acffa_row custom-icon-set'
-			]
-		);
+			add_settings_field(
+				'acffa_new_icon_set_label',
+				__('New Icon Set Label', 'acf-font-awesome'),
+				[$this, 'acffa_new_icon_set_label_cb'],
+				'acffa',
+				'acffa_section_icon_set_builder',
+				[
+					'label_for'	=> 'acffa_new_icon_set_label',
+					'class'		=> 'acffa_row custom-icon-set'
+				]
+			);
 
-		add_settings_field(
-			'acffa_new_icon_set',
-			__( 'New Icon Set', 'acf-font-awesome' ),
-			[ $this, 'acffa_new_icon_set_cb' ],
-			'acffa',
-			'acffa_section_icon_set_builder',
-			[
-				'label_for'	=> 'acffa_new_icon_set',
-				'class'		=> 'acffa_row custom-icon-set'
-			]
-		);
+			add_settings_field(
+				'acffa_new_icon_set',
+				__('New Icon Set', 'acf-font-awesome'),
+				[$this, 'acffa_new_icon_set_cb'],
+				'acffa',
+				'acffa_section_icon_set_builder',
+				[
+					'label_for'	=> 'acffa_new_icon_set',
+					'class'		=> 'acffa_row custom-icon-set'
+				]
+			);
 
-		add_settings_field(
-			'acffa_existing_icon_sets',
-			__( 'Existing Icon Sets', 'acf-font-awesome' ),
-			[ $this, 'acffa_existing_icon_sets_cb' ],
-			'acffa',
-			'acffa_section_icon_set_builder',
-			[
-				'label_for'	=> 'acffa_existing_icon_sets',
-				'class'		=> 'acffa_row custom-icon-set'
-			]
-		);
+			add_settings_field(
+				'acffa_existing_icon_sets',
+				__('Existing Icon Sets', 'acf-font-awesome'),
+				[$this, 'acffa_existing_icon_sets_cb'],
+				'acffa',
+				'acffa_section_icon_set_builder',
+				[
+					'label_for'	=> 'acffa_existing_icon_sets',
+					'class'		=> 'acffa_row custom-icon-set'
+				]
+			);
+		}
 	}
 
 	public function sanitize_new_icon_set( $data )
