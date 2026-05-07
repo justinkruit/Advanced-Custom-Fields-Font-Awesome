@@ -1,4 +1,4 @@
-import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.10.0-2/dist/fa-icon-chooser/fa-icon-chooser.esm.js';
+import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.10.2/dist/fa-icon-chooser/fa-icon-chooser.esm.js';
 
 (function ($) {
   // Font Awesome API endpoint for GraphQL
