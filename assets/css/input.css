@@ -47,8 +47,17 @@
 
 .fa-select2.fa4,
 .fa-select2-drop.fa4 {
-  font-family: FontAwesome, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen-Sans,
-    Ubuntu, Cantarell, 'Helvetica Neue', sans-serif;
+  font-family:
+    FontAwesome,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Roboto,
+    Oxygen-Sans,
+    Ubuntu,
+    Cantarell,
+    'Helvetica Neue',
+    sans-serif;
 }
 
 .acf-admin-page
@@ -147,4 +156,18 @@
 
 input.acffa-default-icon {
   display: none;
+}
+
+button.fa-icon-clear {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  min-height: 30px;
+  margin-left: 8px;
+}
+
+button.fa-icon-clear svg {
+  width: 12px;
+  height: 12px;
 }

@@ -183,6 +183,14 @@ import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.10.2/dist/fa
 
       openIconChooser();
     });
+
+    $el.find('.fa-icon-clear').on('click', function () {
+      let wrapper = $(this).closest('.acf-input');
+      let input = wrapper.find('input');
+      let preview = wrapper.find('.icon_preview');
+      input.val('');
+      preview.empty();
+    });
   }
 
   function setupEditFieldActions($el) {
