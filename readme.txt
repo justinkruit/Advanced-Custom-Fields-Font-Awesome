@@ -4,7 +4,7 @@ Contributors: justinkruit, mattkeys
 Tags: Advanced Custom Fields, ACF, Font Awesome, FontAwesome
 Requires at least: 6.5
 Tested up to: 6.9
-Stable tag: 6.0.0
+Stable tag: 6.0.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,9 @@ This notification message is filterable so you can customize it to better repres
 2. Searchable list of all icons, including large live preview
 
 == Changelog ==
+    
+= 6.0.1 =
+* Bugfix: Fixed issue with new icon chooser not allowing option to be cleared when allow null option was enabled.
 
 = 6.0.0 =
 * New FontAwesome 7.x icon picker powered by the official FontAwesome Icon Chooser web component for a richer icon selection experience.
