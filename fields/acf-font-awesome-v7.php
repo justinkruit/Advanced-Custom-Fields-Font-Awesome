@@ -244,7 +244,7 @@ if (! class_exists('acf_field_font_awesome')) :
 					</button>
 				<?php endif; ?>
 				<input type="hidden" name="acffa_nonce" class="acffa-nonce" value="<?= esc_attr(wp_create_nonce('acffa_nonce')); ?>" />
-				<input type="hidden" name="icon_sets" class="icon-sets" value="<?= esc_attr(implode(',', $field['icon_sets'])); ?>" />
+				<input type="hidden" name="icon_sets" class="icon-sets" value="<?= esc_attr(implode(',', $field['icon_sets'] ?: [])); ?>" />
 			<?php
 			endif;
 
