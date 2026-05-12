@@ -112,7 +112,10 @@ import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.10.2/dist/fa
     el.getUrlText = getUrlText;
     el.includeFamilyStyle = includeFamilyStyle;
 
-    if (!ACFFA.kit_token && ACFFA.latest_version) {
+    if (
+      (!ACFFA.kit_token && ACFFA.latest_version) ||
+      (!ACFFA.has_api_token && ACFFA.latest_version)
+    ) {
       el.setAttribute('version', ACFFA.latest_version);
     } else if (ACFFA.kit_token) {
       el.setAttribute('kit-token', ACFFA.kit_token);

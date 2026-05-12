@@ -287,6 +287,7 @@ if (! class_exists('acf_field_font_awesome')) :
 				'major_version'		=> ACFFA_MAJOR_VERSION,
 				'v5_compat_mode'	=> isset($options['acffa_v5_compatibility_mode']) && $options['acffa_v5_compatibility_mode'] ? true : false,
 				'kit_token'			=> apply_filters('ACFFA_fontawesome_kit_token', false),
+				'has_api_token'		=> apply_filters('ACFFA_fontawesome_access_token', false) ? true : false,
 				'latest_version'	=> $latest_version,
 				'nonce'				=> wp_create_nonce('acffa_nonce'),
 				'ajax_url'			=> admin_url('admin-ajax.php')
