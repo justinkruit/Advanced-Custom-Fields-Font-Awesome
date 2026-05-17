@@ -4,7 +4,7 @@ Contributors: justinkruit, mattkeys
 Tags: Advanced Custom Fields, ACF, Font Awesome, FontAwesome
 Requires at least: 6.5
 Tested up to: 7.0
-Stable tag: 6.0.2
+Stable tag: 6.0.3
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -85,6 +85,10 @@ This notification message is filterable so you can customize it to better repres
 2. Searchable list of all icons, including large live preview
 
 == Changelog ==
+
+= 6.0.3 =
+* Added: FA icon when picking a new field.
+* Bugfix: Be able to clear default icon selection.
 
 = 6.0.2 =
 * Bugfix: Fixed issue when no icon family was selected.
