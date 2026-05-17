@@ -7,7 +7,7 @@
  * =======================================
  * 
  * 
- * @author Matt Keys <https://profiles.wordpress.org/mattkeys>
+ * @author Justin Kruit <https://profiles.wordpress.org/justinkruit>
  */
 
 if (! defined('ABSPATH')) {
