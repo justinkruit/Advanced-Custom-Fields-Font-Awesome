@@ -3,7 +3,7 @@
 Contributors: justinkruit, mattkeys
 Tags: Advanced Custom Fields, ACF, Font Awesome, FontAwesome
 Requires at least: 6.5
-Tested up to: 6.9
+Tested up to: 7.0
 Stable tag: 6.0.2
 Requires PHP: 5.6
 License: GPLv2 or later
