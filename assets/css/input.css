@@ -171,3 +171,8 @@ button.fa-icon-clear svg {
   width: 12px;
   height: 12px;
 }
+
+.field-type-icon.field-type-icon-font-awesome:before {
+    -webkit-mask-image: url(../images/icon-field-fa.svg);
+    mask-image: url(../images/icon-field-fa.svg);
+}
