@@ -4,7 +4,7 @@ Contributors: justinkruit, mattkeys
 Tags: Advanced Custom Fields, ACF, Font Awesome, FontAwesome
 Requires at least: 6.5
 Tested up to: 7.1
-Stable tag: 6.2.0
+Stable tag: 6.2.1
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -90,6 +90,12 @@ This notification message is filterable so you can customize it to better repres
 Please report security bugs found in the source code of the Advanced Custom Fields: Font Awesome Field plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/d5028112-9b80-4292-b5da-bc0e3c1cac0d). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 == Changelog ==
+
+= 6.2.1 =
+* Security: Fixed a stored XSS vulnerability where icon values saved by low-privileged users (e.g. via a field on the user profile form) could inject HTML attributes through the 'Icon Object' return format. Icon data is now sanitized when saved and when output, including values saved before this update.
+* Security: Escaped all icon object properties at output.
+* Bugfix: The default icon sets of Font Awesome 7.x fields did not include Brand icons.
+* Improvement: The Font Awesome 7.x icon chooser opens faster thanks to request caching.
 
 = 6.2.0 =
 * New: When using a FontAwesome Kit, icon search and the icon showcase now only show icons and styles that are actually included in your kit, instead of the full FontAwesome library.
