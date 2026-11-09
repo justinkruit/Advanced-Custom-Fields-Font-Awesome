@@ -62,13 +62,10 @@ class ACFFA_Loader_7 {
 
 		$operation_name	= array_search($query, $this->acffa_upstream_query_templates(), true);
 		$cache_key		= $this->acffa_query_cache_key($operation_name, $request);
+		$cached			= $cache_key ? get_transient($cache_key) : false;
 
-		if ($cache_key) {
-			$cached_response = get_transient($cache_key);
-
-			if (is_string($cached_response) && $cached_response !== '') {
-				wp_send_json_success(json_decode($cached_response));
-			}
+		if ($cached) {
+			wp_send_json_success(json_decode($cached));
 		}
 
 		$remote_get = wp_remote_post('https://api.fontawesome.com', [
@@ -86,10 +83,11 @@ class ACFFA_Loader_7 {
 
 			if ($response) {
 				if (empty($response->errors)) {
-					if ('KitRevision' === $operation_name) {
-						$this->acffa_store_kit_revision($response);
-					} else if ($cache_key) {
-						set_transient($cache_key, $response_json, $this->acffa_query_cache_ttl($operation_name));
+					if ('KitRevision' === $operation_name && isset($response->data->me->kit)) {
+						$kit = $response->data->me->kit;
+						update_option('ACFFA_kit_revision', $this->kit_token . '|' . $kit->kitRevision . '|' . $kit->showcaseCacheKey, false);
+					} elseif ($cache_key) {
+						set_transient($cache_key, $response_json, 'Search' === $operation_name ? WEEK_IN_SECONDS : DAY_IN_SECONDS);
 					}
 				}
 
@@ -101,51 +99,23 @@ class ACFFA_Loader_7 {
 	}
 
 	/**
-	 * Server-side cache key for upstream responses that are safe to share
-	 * between requests and users. Kit data is keyed on the kit's current
-	 * revision (as reported by the never-cached KitRevision probe, which the
-	 * icon chooser always runs first), so a changed kit is never served
-	 * stale data. Returns false for responses that must not be cached.
+	 * Transient key for upstream responses that are safe to share, or false.
+	 * Search results are fixed per Font Awesome version. Kit data is keyed on
+	 * the revision from the uncached KitRevision probe (which the chooser always
+	 * runs first), so a changed kit is never served stale data.
 	 */
 	private function acffa_query_cache_key($operation_name, $request) {
-		switch ($operation_name) {
-			case 'Search':
-				// Search results are fixed for a given Font Awesome version.
-				return 'ACFFA_q_' . md5(wp_json_encode($request));
+		if ('Search' === $operation_name) {
+			return 'ACFFA_q_' . md5(wp_json_encode($request));
+		}
 
-			case 'KitMetadata':
-			case 'ShowcaseIcons':
-				$revision = get_option('ACFFA_kit_revision');
+		$revision = get_option('ACFFA_kit_revision');
 
-				if (! is_array($revision) || ($revision['kit'] ?? '') !== $this->kit_token || empty($revision['revision'])) {
-					return false;
-				}
-
-				return 'ACFFA_q_' . md5(wp_json_encode($request) . '|' . $revision['revision']);
+		if (in_array($operation_name, ['KitMetadata', 'ShowcaseIcons'], true) && $this->kit_token && is_string($revision) && 0 === strpos($revision, $this->kit_token . '|')) {
+			return 'ACFFA_q_' . md5(wp_json_encode($request) . $revision);
 		}
 
 		return false;
-	}
-
-	private function acffa_query_cache_ttl($operation_name) {
-		return 'Search' === $operation_name ? WEEK_IN_SECONDS : DAY_IN_SECONDS;
-	}
-
-	private function acffa_store_kit_revision($response) {
-		$kit = $response->data->me->kit ?? null;
-
-		if (! $kit || empty($this->kit_token)) {
-			return;
-		}
-
-		$revision = [
-			'kit'		=> $this->kit_token,
-			'revision'	=> (string) ($kit->kitRevision ?? '') . '|' . (string) ($kit->showcaseCacheKey ?? ''),
-		];
-
-		if (get_option('ACFFA_kit_revision') !== $revision) {
-			update_option('ACFFA_kit_revision', $revision, false);
-		}
 	}
 
 	/**
