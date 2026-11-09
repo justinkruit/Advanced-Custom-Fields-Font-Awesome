@@ -401,14 +401,14 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 
 					case 'object':
 						$object_data = [
-							'element'	=> '<i class="' . $class . '" aria-hidden="true"></i>',
-							'class'		=> $class,
-							'id'		=> $icon_json->id,
-							'family'	=> $family,
-							'style'		=> $icon_json->style,
-							'prefix'	=> $prefix,
-							'hex'		=> '\\' . $icon_json->unicode,
-							'unicode'	=> '&#x' . $icon_json->unicode . ';'
+							'element'	=> '<i class="' . esc_attr($class) . '" aria-hidden="true"></i>',
+							'class'		=> esc_attr($class),
+							'id'		=> esc_attr($icon_json->id),
+							'family'	=> esc_attr($family),
+							'style'		=> esc_attr($icon_json->style),
+							'prefix'	=> esc_attr($prefix),
+							'hex'		=> '\\' . esc_attr($icon_json->unicode),
+							'unicode'	=> '&#x' . esc_attr($icon_json->unicode) . ';'
 						];
 
 						if ( 'fak' == $icon_json->style || 'custom' == $icon_json->style ) {
