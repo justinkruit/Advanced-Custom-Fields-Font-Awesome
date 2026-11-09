@@ -15,6 +15,17 @@ delete_option( 'ACFFA_last_api_call_status' );
 delete_option( 'ACFFA_kits' );
 delete_transient( 'ACFFA_search_config' );
 delete_transient( 'ACFFA_access_token' );
+delete_option( 'ACFFA_kit_revision' );
+
+// Cached FontAwesome API responses.
+global $wpdb;
+$wpdb->query(
+	$wpdb->prepare(
+		"DELETE FROM {$wpdb->options} WHERE option_name LIKE %s OR option_name LIKE %s",
+		$wpdb->esc_like( '_transient_ACFFA_q_' ) . '%',
+		$wpdb->esc_like( '_transient_timeout_ACFFA_q_' ) . '%'
+	)
+);
 
 $ACFFA_custom_icon_sets_list = get_option( 'ACFFA_custom_icon_sets_list' );
 if ( $ACFFA_custom_icon_sets_list ) {
