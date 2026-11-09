@@ -373,6 +373,8 @@ if (! class_exists('acf_field_font_awesome')) :
 
 			if (is_object($icon_json)) {
 				$value = wp_slash(wp_json_encode($this->sanitize_icon_json($icon_json)));
+			} elseif (is_string($value)) {
+				$value = preg_replace('/[^a-z0-9 _-]/i', '', $value);
 			}
 
 			return $value;
@@ -455,6 +457,8 @@ if (! class_exists('acf_field_font_awesome')) :
 						break;
 				}
 			} else {
+				// Non-JSON values are legacy v4/v5 class strings (e.g. "fas fa-coffee"); strip anything that could break out of an attribute.
+				$value = preg_replace('/[^a-z0-9 _-]/i', '', (string) $value);
 				$value = apply_filters('ACFFA_v5_upgrade_compat_format_value', $value, $field['save_format']);
 			}
 
