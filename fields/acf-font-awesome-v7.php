@@ -197,7 +197,7 @@ if (! class_exists('acf_field_font_awesome')) :
 
 			$field['type']		= 'text';
 			$field['value']		= $select_value;
-			$field['icon_sets']	= isset($field['icon_sets']) ? apply_filters('ACFFA_standardize_icon_set_family_style', $field['icon_sets']) : ['classic_solid', 'classic_regular', 'brands'];
+			$field['icon_sets']	= apply_filters('ACFFA_standardize_icon_set_family_style', $field['icon_sets'] ?? ['classic_solid', 'classic_regular', 'brands']);
 			$field['prepend'] = '';
 			$field['append'] = '';
 			$field['class']		= $v5_icon_preselected ? 'v5_icon_preselected selected-icon hidden' : 'selected-icon hidden';
@@ -329,6 +329,55 @@ if (! class_exists('acf_field_font_awesome')) :
 			}
 		}
 
+		/**
+		 * Restrict stored icon JSON to safe values so nothing user-supplied can break out of HTML attributes.
+		 */
+		private function sanitize_icon_json($icon_json) {
+			foreach (['id', 'family', 'style'] as $key) {
+				if (isset($icon_json->$key)) {
+					$icon_json->$key = is_scalar($icon_json->$key) ? preg_replace('/[^a-z0-9_-]/i', '', (string) $icon_json->$key) : '';
+				}
+			}
+			if (isset($icon_json->label)) {
+				$icon_json->label = is_scalar($icon_json->label) ? sanitize_text_field((string) $icon_json->label) : '';
+			}
+			if (isset($icon_json->unicode)) {
+				$icon_json->unicode = is_scalar($icon_json->unicode) ? preg_replace('/[^a-f0-9]/i', '', (string) $icon_json->unicode) : '';
+			}
+			foreach (['width', 'height'] as $key) {
+				if (isset($icon_json->$key)) {
+					$icon_json->$key = is_numeric($icon_json->$key) ? $icon_json->$key + 0 : 0;
+				}
+			}
+			if (isset($icon_json->path)) {
+				$clean_path = function ($path) {
+					return is_scalar($path) ? preg_replace('/[^a-z0-9 .,+-]/i', '', (string) $path) : '';
+				};
+				$icon_json->path = is_array($icon_json->path) ? array_map($clean_path, $icon_json->path) : $clean_path($icon_json->path);
+			}
+			if (isset($icon_json->html)) {
+				$svg_attrs = ['class' => true, 'fill' => true, 'opacity' => true, 'transform' => true];
+				$icon_json->html = is_string($icon_json->html) ? wp_kses($icon_json->html, [
+					'svg'	=> $svg_attrs + ['xmlns' => true, 'viewbox' => true, 'width' => true, 'height' => true, 'aria-hidden' => true, 'role' => true, 'focusable' => true, 'data-prefix' => true, 'data-icon' => true],
+					'g'		=> $svg_attrs,
+					'path'	=> $svg_attrs + ['d' => true],
+					'title'	=> [],
+				]) : '';
+			}
+
+			return $icon_json;
+		}
+
+		public function update_value($value, $post_id, $field) {
+			$icon_json = is_string($value) ? json_decode(wp_unslash($value)) : null;
+
+			if (is_object($icon_json)) {
+				$value = wp_slash(wp_json_encode($this->sanitize_icon_json($icon_json)));
+			}
+
+			return $value;
+		}
+
 		public function format_value($value, $post_id, $field) {
 			if ('null' == $value) {
 				return false;
@@ -341,6 +390,7 @@ if (! class_exists('acf_field_font_awesome')) :
 			$icon_json = json_decode($value);
 
 			if (is_object($icon_json)) {
+				$icon_json = $this->sanitize_icon_json($icon_json);
 				$family = isset($icon_json->family) ? $icon_json->family : apply_filters('ACFFA_default_family_by_style', 'classic', $icon_json->style);
 				$style = isset($icon_json->style) ? $icon_json->style : '';
 				$classes = [];
