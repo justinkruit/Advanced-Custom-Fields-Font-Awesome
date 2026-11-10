@@ -357,10 +357,20 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 
 		public function update_value($value, $post_id, $field)
 		{
-			$icon_json = is_string($value) ? json_decode(wp_unslash($value)) : null;
+			// ACF passes slashed values for post/option saves (unslashed again on write) but unslashed values for
+			// blocks/local meta (stored as-is), so keep the slash level we were given.
+			$icon_json = is_string($value) ? json_decode($value) : null;
+			$slashed = false;
+			if (! is_object($icon_json) && is_string($value)) {
+				$icon_json = json_decode(wp_unslash($value));
+				$slashed = true;
+			}
 
 			if (is_object($icon_json)) {
-				$value = wp_slash(wp_json_encode($this->sanitize_icon_json($icon_json)));
+				$value = wp_json_encode($this->sanitize_icon_json($icon_json));
+				if ($slashed) {
+					$value = wp_slash($value);
+				}
 			} elseif (is_string($value)) {
 				$value = preg_replace('/[^a-z0-9 _-]/i', '', $value);
 			}
@@ -379,6 +389,10 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 			}
 
 			$icon_json = json_decode( $value );
+			if (! is_object($icon_json)) {
+				// Values saved by 6.2.1 in blocks/local meta were stored with an extra layer of slashes.
+				$icon_json = json_decode(wp_unslash($value));
+			}
 
 			if ( is_object( $icon_json ) ) {
 				$icon_json = $this->sanitize_icon_json($icon_json);
