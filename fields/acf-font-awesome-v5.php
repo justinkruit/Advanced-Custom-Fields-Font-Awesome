@@ -290,6 +290,12 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 			wp_enqueue_style('font-awesome');
 		}
 	
+		public function update_value( $value, $post_id, $field )
+		{
+			// v4/v5 values are plain class strings (e.g. "fas fa-coffee"); strip anything that could break out of an attribute.
+			return is_string( $value ) ? preg_replace( '/[^a-z0-9 _-]/i', '', $value ) : $value;
+		}
+
 		public function format_value( $value, $post_id, $field )
 		{
 			if ( 'null' == $value ) {
@@ -304,6 +310,9 @@ if ( ! class_exists( 'acf_field_font_awesome' ) ) :
 			if ( is_object( $icon_json ) ) {
 				return false;
 			}
+
+			// Also sanitize on output so values stored before update_value() existed are safe.
+			$value = preg_replace( '/[^a-z0-9 _-]/i', '', (string) $value );
 
 			if ( ! $this->icons ) {
 				$this->get_icons();
