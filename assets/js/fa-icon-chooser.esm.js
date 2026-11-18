@@ -21,8 +21,10 @@ import 'https://cdn.jsdelivr.net/npm/@fortawesome/fa-icon-chooser@0.11.0/dist/fa
     if (Array.isArray(node)) {
       node.forEach(rememberUnicodes);
     } else if (node && typeof node === 'object') {
-      if (node.name && node.unicodeHex) {
-        unicodes.set(node.name, node.unicodeHex);
+      // Icons carry unicodeHex; kit uploads in the kit metadata only carry a numeric unicode.
+      const hex = node.unicodeHex || (typeof node.unicode === 'number' ? node.unicode.toString(16) : '');
+      if (node.name && hex) {
+        unicodes.set(node.name, hex);
       }
       Object.values(node).forEach(rememberUnicodes);
     }
