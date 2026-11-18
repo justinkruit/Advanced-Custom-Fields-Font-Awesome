@@ -93,6 +93,7 @@ Please report security bugs found in the source code of the Advanced Custom Fiel
 
 = 6.2.3 =
 * Security: Fixed a stored XSS vulnerability in the FontAwesome 4.x/5.x field where icon values saved by low-privileged users (e.g. via a field on the user profile form or the REST API) could inject HTML attributes through the 'Icon Class' return format. Icon classes are now sanitized when saved and when output, including values saved before this update.
+* Bugfix: Selecting an icon in the FontAwesome 7 icon picker failed or saved an empty unicode for kits that don't allow embedding.
 
 = 6.2.2 =
 * Bugfix: Icon fields inside ACF Blocks (e.g. in a repeater) returned a broken string like "styleregularidphone..." after updating to 6.2.1. Affected values are repaired automatically, no re-saving needed.
