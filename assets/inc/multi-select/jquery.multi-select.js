@@ -83,7 +83,7 @@
         that.activeKeyboard(that.$selectionUl);
 
         ms.on('focus', function(){
-          that.$selectableUl.focus();
+          that.$selectableUl.trigger('focus');
         });
       }
 
@@ -230,7 +230,7 @@
               e.preventDefault();
               var tabindex = parseInt(that.$element.attr('tabindex'), 10);
               tabindex = (e.shiftKey) ? tabindex-1 : tabindex+1;
-              $('[tabindex="'+(tabindex)+'"]').focus();
+              $('[tabindex="'+(tabindex)+'"]').trigger('focus');
               return;
             }else{
               if(e.shiftKey){
@@ -319,12 +319,12 @@
     },
 
     'switchList' : function($list){
-      $list.blur();
+      $list.trigger('blur');
       this.$container.find(this.elemsSelector).removeClass('ms-hover');
       if ($list.parent().hasClass('ms-selectable')){
-        this.$selectionUl.focus();
+        this.$selectionUl.trigger('focus');
       } else {
-        this.$selectableUl.focus();
+        this.$selectableUl.trigger('focus');
       }
     },
 
@@ -459,7 +459,7 @@
       this.$selectionUl.find('.ms-optgroup-label').show();
       this.$selectableUl.find('.ms-optgroup-label').hide();
       this.$selectionUl.find('.ms-elem-selection').filter(':not(.'+this.options.disabledClass+')').addClass('ms-selected').show();
-      this.$selectionUl.focus();
+      this.$selectionUl.trigger('focus');
       ms.trigger('change');
       if (typeof this.options.afterSelect === 'function') {
         var selectedValues = $.grep(ms.val(), function(item){
@@ -478,7 +478,7 @@
       this.$selectionUl.find('.ms-optgroup-label').hide();
       this.$selectableUl.find('.ms-optgroup-label').show();
       this.$selectionUl.find('.ms-elem-selection').removeClass('ms-selected').hide();
-      this.$selectableUl.focus();
+      this.$selectableUl.trigger('focus');
       ms.trigger('change');
       if (typeof this.options.afterDeselect === 'function') {
         this.options.afterDeselect.call(this, values);

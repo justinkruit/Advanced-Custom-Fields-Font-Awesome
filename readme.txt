@@ -3,8 +3,8 @@
 Contributors: justinkruit, mattkeys
 Tags: Advanced Custom Fields, ACF, Font Awesome, FontAwesome
 Requires at least: 6.5
-Tested up to: 7.1
-Stable tag: 6.2.3
+Tested up to: 7.2
+Stable tag: 6.2.4
 Requires PHP: 5.6
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
@@ -90,6 +90,10 @@ This notification message is filterable so you can customize it to better repres
 Please report security bugs found in the source code of the Advanced Custom Fields: Font Awesome Field plugin through the [Patchstack Vulnerability Disclosure  Program](https://patchstack.com/database/vdp/d5028112-9b80-4292-b5da-bc0e3c1cac0d). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 == Changelog ==
+
+= 6.2.4 =
+* Compatibility: Tested with WordPress 7.2.
+* Compatibility: Replaced jQuery APIs that are deprecated or removed in jQuery 4 (`$.parseJSON`, `$.trim`, `.focus()`/`.blur()` shorthands) in preparation for the jQuery 4 update planned for WordPress 7.3.
 
 = 6.2.3 =
 * Security: Fixed a stored XSS vulnerability in the FontAwesome 4.x/5.x field where icon values saved by low-privileged users (e.g. via a field on the user profile form or the REST API) could inject HTML attributes through the 'Icon Class' return format. Icon classes are now sanitized when saved and when output, including values saved before this update.
